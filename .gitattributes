@@ -1,0 +1,2 @@
+*.coe filter=lfs diff=lfs merge=lfs -text
+*.mif filter=lfs diff=lfs merge=lfs -text

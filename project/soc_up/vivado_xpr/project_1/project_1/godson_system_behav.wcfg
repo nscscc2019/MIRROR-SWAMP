@@ -1,0 +1,1036 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="godson_system_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="godson_system" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="70630681995fs"></ZoomStartTime>
+      <ZoomEndTime time="70630682002fs"></ZoomEndTime>
+      <Cursor1Time time="70630682000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="220"></NameColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="56" />
+   <wvobject fp_name="/godson_system/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/resetn" type="logic">
+      <obj_property name="ElementShortName">resetn</obj_property>
+      <obj_property name="ObjectShortName">resetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/debug_wb_pc" type="array">
+      <obj_property name="ElementShortName">debug_wb_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">debug_wb_pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mac_clk" type="logic">
+      <obj_property name="ElementShortName">mac_clk</obj_property>
+      <obj_property name="ObjectShortName">mac_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/araddr" type="array">
+      <obj_property name="ElementShortName">araddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">araddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_dq" type="array">
+      <obj_property name="ElementShortName">ddr3_dq[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dq[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_addr" type="array">
+      <obj_property name="ElementShortName">ddr3_addr[12:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_addr[12:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_ba" type="array">
+      <obj_property name="ElementShortName">ddr3_ba[2:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_ba[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_ras_n" type="logic">
+      <obj_property name="ElementShortName">ddr3_ras_n</obj_property>
+      <obj_property name="ObjectShortName">ddr3_ras_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_cas_n" type="logic">
+      <obj_property name="ElementShortName">ddr3_cas_n</obj_property>
+      <obj_property name="ObjectShortName">ddr3_cas_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_we_n" type="logic">
+      <obj_property name="ElementShortName">ddr3_we_n</obj_property>
+      <obj_property name="ObjectShortName">ddr3_we_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_odt" type="logic">
+      <obj_property name="ElementShortName">ddr3_odt</obj_property>
+      <obj_property name="ObjectShortName">ddr3_odt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_reset_n" type="logic">
+      <obj_property name="ElementShortName">ddr3_reset_n</obj_property>
+      <obj_property name="ObjectShortName">ddr3_reset_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_cke" type="logic">
+      <obj_property name="ElementShortName">ddr3_cke</obj_property>
+      <obj_property name="ObjectShortName">ddr3_cke</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_dm" type="array">
+      <obj_property name="ElementShortName">ddr3_dm[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dm[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_dqs_p" type="array">
+      <obj_property name="ElementShortName">ddr3_dqs_p[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dqs_p[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_dqs_n" type="array">
+      <obj_property name="ElementShortName">ddr3_dqs_n[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ddr3_dqs_n[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_ck_p" type="logic">
+      <obj_property name="ElementShortName">ddr3_ck_p</obj_property>
+      <obj_property name="ObjectShortName">ddr3_ck_p</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/ddr3_ck_n" type="logic">
+      <obj_property name="ElementShortName">ddr3_ck_n</obj_property>
+      <obj_property name="ObjectShortName">ddr3_ck_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mtxclk_0" type="logic">
+      <obj_property name="ElementShortName">mtxclk_0</obj_property>
+      <obj_property name="ObjectShortName">mtxclk_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mtxd_0" type="array">
+      <obj_property name="ElementShortName">mtxd_0[3:0]</obj_property>
+      <obj_property name="ObjectShortName">mtxd_0[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mtxen_0" type="logic">
+      <obj_property name="ElementShortName">mtxen_0</obj_property>
+      <obj_property name="ObjectShortName">mtxen_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mtxerr_0" type="logic">
+      <obj_property name="ElementShortName">mtxerr_0</obj_property>
+      <obj_property name="ObjectShortName">mtxerr_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mrxclk_0" type="logic">
+      <obj_property name="ElementShortName">mrxclk_0</obj_property>
+      <obj_property name="ObjectShortName">mrxclk_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mrxd_0" type="array">
+      <obj_property name="ElementShortName">mrxd_0[3:0]</obj_property>
+      <obj_property name="ObjectShortName">mrxd_0[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mrxdv_0" type="logic">
+      <obj_property name="ElementShortName">mrxdv_0</obj_property>
+      <obj_property name="ObjectShortName">mrxdv_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mrxerr_0" type="logic">
+      <obj_property name="ElementShortName">mrxerr_0</obj_property>
+      <obj_property name="ObjectShortName">mrxerr_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mdc_0" type="logic">
+      <obj_property name="ElementShortName">mdc_0</obj_property>
+      <obj_property name="ObjectShortName">mdc_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/mdio_0" type="logic">
+      <obj_property name="ElementShortName">mdio_0</obj_property>
+      <obj_property name="ObjectShortName">mdio_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/phy_rstn" type="logic">
+      <obj_property name="ElementShortName">phy_rstn</obj_property>
+      <obj_property name="ObjectShortName">phy_rstn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/LED" type="array">
+      <obj_property name="ElementShortName">LED[7:0]</obj_property>
+      <obj_property name="ObjectShortName">LED[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/UART_RX" type="logic">
+      <obj_property name="ElementShortName">UART_RX</obj_property>
+      <obj_property name="ObjectShortName">UART_RX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/UART_TX" type="logic">
+      <obj_property name="ElementShortName">UART_TX</obj_property>
+      <obj_property name="ObjectShortName">UART_TX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/UART_CTS" type="logic">
+      <obj_property name="ElementShortName">UART_CTS</obj_property>
+      <obj_property name="ObjectShortName">UART_CTS</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/UART_RTS" type="logic">
+      <obj_property name="ElementShortName">UART_RTS</obj_property>
+      <obj_property name="ObjectShortName">UART_RTS</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/UART_DTR" type="logic">
+      <obj_property name="ElementShortName">UART_DTR</obj_property>
+      <obj_property name="ObjectShortName">UART_DTR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/UART_DSR" type="logic">
+      <obj_property name="ElementShortName">UART_DSR</obj_property>
+      <obj_property name="ObjectShortName">UART_DSR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/UART_RI" type="logic">
+      <obj_property name="ElementShortName">UART_RI</obj_property>
+      <obj_property name="ObjectShortName">UART_RI</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/UART_DCD" type="logic">
+      <obj_property name="ElementShortName">UART_DCD</obj_property>
+      <obj_property name="ObjectShortName">UART_DCD</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/NAND_CLE" type="logic">
+      <obj_property name="ElementShortName">NAND_CLE</obj_property>
+      <obj_property name="ObjectShortName">NAND_CLE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/NAND_ALE" type="logic">
+      <obj_property name="ElementShortName">NAND_ALE</obj_property>
+      <obj_property name="ObjectShortName">NAND_ALE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/NAND_RDY" type="logic">
+      <obj_property name="ElementShortName">NAND_RDY</obj_property>
+      <obj_property name="ObjectShortName">NAND_RDY</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/NAND_DATA" type="array">
+      <obj_property name="ElementShortName">NAND_DATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">NAND_DATA[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/NAND_RD" type="logic">
+      <obj_property name="ElementShortName">NAND_RD</obj_property>
+      <obj_property name="ObjectShortName">NAND_RD</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/NAND_CE" type="logic">
+      <obj_property name="ElementShortName">NAND_CE</obj_property>
+      <obj_property name="ObjectShortName">NAND_CE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/NAND_WR" type="logic">
+      <obj_property name="ElementShortName">NAND_WR</obj_property>
+      <obj_property name="ObjectShortName">NAND_WR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/SPI_CLK" type="logic">
+      <obj_property name="ElementShortName">SPI_CLK</obj_property>
+      <obj_property name="ObjectShortName">SPI_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/SPI_CS" type="logic">
+      <obj_property name="ElementShortName">SPI_CS</obj_property>
+      <obj_property name="ObjectShortName">SPI_CS</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/SPI_MISO" type="logic">
+      <obj_property name="ElementShortName">SPI_MISO</obj_property>
+      <obj_property name="ObjectShortName">SPI_MISO</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/SPI_MOSI" type="logic">
+      <obj_property name="ElementShortName">SPI_MOSI</obj_property>
+      <obj_property name="ObjectShortName">SPI_MOSI</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/TDI" type="logic">
+      <obj_property name="ElementShortName">TDI</obj_property>
+      <obj_property name="ObjectShortName">TDI</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/TDO" type="logic">
+      <obj_property name="ElementShortName">TDO</obj_property>
+      <obj_property name="ObjectShortName">TDO</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/TCK" type="logic">
+      <obj_property name="ElementShortName">TCK</obj_property>
+      <obj_property name="ObjectShortName">TCK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/TRST" type="logic">
+      <obj_property name="ElementShortName">TRST</obj_property>
+      <obj_property name="ObjectShortName">TRST</obj_property>
+   </wvobject>
+   <wvobject fp_name="/godson_system/TMS" type="logic">
+      <obj_property name="ElementShortName">TMS</obj_property>
+      <obj_property name="ObjectShortName">TMS</obj_property>
+   </wvobject>
+   <wvobject fp_name="group142" type="group">
+      <obj_property name="label">all</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/aclk" type="logic">
+         <obj_property name="ElementShortName">aclk</obj_property>
+         <obj_property name="ObjectShortName">aclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/aresetn" type="logic">
+         <obj_property name="ElementShortName">aresetn</obj_property>
+         <obj_property name="ObjectShortName">aresetn</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awid" type="array">
+         <obj_property name="ElementShortName">s_axi_awid[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awid[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awaddr" type="array">
+         <obj_property name="ElementShortName">s_axi_awaddr[127:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awaddr[127:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awlen" type="array">
+         <obj_property name="ElementShortName">s_axi_awlen[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awlen[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awsize" type="array">
+         <obj_property name="ElementShortName">s_axi_awsize[11:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awsize[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awburst" type="array">
+         <obj_property name="ElementShortName">s_axi_awburst[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awburst[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awlock" type="array">
+         <obj_property name="ElementShortName">s_axi_awlock[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awlock[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awcache" type="array">
+         <obj_property name="ElementShortName">s_axi_awcache[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awcache[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awprot" type="array">
+         <obj_property name="ElementShortName">s_axi_awprot[11:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awprot[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awqos" type="array">
+         <obj_property name="ElementShortName">s_axi_awqos[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awqos[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awvalid" type="array">
+         <obj_property name="ElementShortName">s_axi_awvalid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awvalid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_awready" type="array">
+         <obj_property name="ElementShortName">s_axi_awready[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_awready[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_wid" type="array">
+         <obj_property name="ElementShortName">s_axi_wid[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_wid[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_wdata" type="array">
+         <obj_property name="ElementShortName">s_axi_wdata[127:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_wdata[127:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_wstrb" type="array">
+         <obj_property name="ElementShortName">s_axi_wstrb[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_wstrb[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_wlast" type="array">
+         <obj_property name="ElementShortName">s_axi_wlast[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_wlast[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_wvalid" type="array">
+         <obj_property name="ElementShortName">s_axi_wvalid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_wvalid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_wready" type="array">
+         <obj_property name="ElementShortName">s_axi_wready[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_wready[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_bid" type="array">
+         <obj_property name="ElementShortName">s_axi_bid[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_bid[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_bresp" type="array">
+         <obj_property name="ElementShortName">s_axi_bresp[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_bresp[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_bvalid" type="array">
+         <obj_property name="ElementShortName">s_axi_bvalid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_bvalid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_bready" type="array">
+         <obj_property name="ElementShortName">s_axi_bready[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_bready[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arid" type="array">
+         <obj_property name="ElementShortName">s_axi_arid[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arid[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_araddr" type="array">
+         <obj_property name="ElementShortName">s_axi_araddr[127:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_araddr[127:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arlen" type="array">
+         <obj_property name="ElementShortName">s_axi_arlen[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arlen[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arsize" type="array">
+         <obj_property name="ElementShortName">s_axi_arsize[11:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arsize[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arburst" type="array">
+         <obj_property name="ElementShortName">s_axi_arburst[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arburst[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arlock" type="array">
+         <obj_property name="ElementShortName">s_axi_arlock[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arlock[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arcache" type="array">
+         <obj_property name="ElementShortName">s_axi_arcache[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arcache[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arprot" type="array">
+         <obj_property name="ElementShortName">s_axi_arprot[11:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arprot[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arqos" type="array">
+         <obj_property name="ElementShortName">s_axi_arqos[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arqos[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arvalid" type="array">
+         <obj_property name="ElementShortName">s_axi_arvalid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arvalid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_arready" type="array">
+         <obj_property name="ElementShortName">s_axi_arready[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_arready[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_rid" type="array">
+         <obj_property name="ElementShortName">s_axi_rid[15:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_rid[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_rdata" type="array">
+         <obj_property name="ElementShortName">s_axi_rdata[127:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_rdata[127:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_rresp" type="array">
+         <obj_property name="ElementShortName">s_axi_rresp[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_rresp[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_rlast" type="array">
+         <obj_property name="ElementShortName">s_axi_rlast[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_rlast[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_rvalid" type="array">
+         <obj_property name="ElementShortName">s_axi_rvalid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_rvalid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/s_axi_rready" type="array">
+         <obj_property name="ElementShortName">s_axi_rready[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_rready[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awid" type="array">
+         <obj_property name="ElementShortName">m_axi_awid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awaddr" type="array">
+         <obj_property name="ElementShortName">m_axi_awaddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awaddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awlen" type="array">
+         <obj_property name="ElementShortName">m_axi_awlen[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awlen[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awsize" type="array">
+         <obj_property name="ElementShortName">m_axi_awsize[2:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awsize[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awburst" type="array">
+         <obj_property name="ElementShortName">m_axi_awburst[1:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awburst[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awlock" type="array">
+         <obj_property name="ElementShortName">m_axi_awlock[1:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awlock[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awcache" type="array">
+         <obj_property name="ElementShortName">m_axi_awcache[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awcache[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awprot" type="array">
+         <obj_property name="ElementShortName">m_axi_awprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awqos" type="array">
+         <obj_property name="ElementShortName">m_axi_awqos[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awqos[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awvalid" type="array">
+         <obj_property name="ElementShortName">m_axi_awvalid[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awvalid[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_awready" type="array">
+         <obj_property name="ElementShortName">m_axi_awready[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_awready[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_wid" type="array">
+         <obj_property name="ElementShortName">m_axi_wid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_wid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_wdata" type="array">
+         <obj_property name="ElementShortName">m_axi_wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_wstrb" type="array">
+         <obj_property name="ElementShortName">m_axi_wstrb[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_wstrb[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_wlast" type="array">
+         <obj_property name="ElementShortName">m_axi_wlast[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_wlast[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_wvalid" type="array">
+         <obj_property name="ElementShortName">m_axi_wvalid[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_wvalid[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_wready" type="array">
+         <obj_property name="ElementShortName">m_axi_wready[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_wready[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_bid" type="array">
+         <obj_property name="ElementShortName">m_axi_bid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_bid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_bresp" type="array">
+         <obj_property name="ElementShortName">m_axi_bresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_bresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_bvalid" type="array">
+         <obj_property name="ElementShortName">m_axi_bvalid[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_bvalid[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_bready" type="array">
+         <obj_property name="ElementShortName">m_axi_bready[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_bready[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arid" type="array">
+         <obj_property name="ElementShortName">m_axi_arid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_araddr" type="array">
+         <obj_property name="ElementShortName">m_axi_araddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_araddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arlen" type="array">
+         <obj_property name="ElementShortName">m_axi_arlen[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arlen[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arsize" type="array">
+         <obj_property name="ElementShortName">m_axi_arsize[2:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arsize[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arburst" type="array">
+         <obj_property name="ElementShortName">m_axi_arburst[1:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arburst[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arlock" type="array">
+         <obj_property name="ElementShortName">m_axi_arlock[1:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arlock[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arcache" type="array">
+         <obj_property name="ElementShortName">m_axi_arcache[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arcache[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arprot" type="array">
+         <obj_property name="ElementShortName">m_axi_arprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arqos" type="array">
+         <obj_property name="ElementShortName">m_axi_arqos[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arqos[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arvalid" type="array">
+         <obj_property name="ElementShortName">m_axi_arvalid[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arvalid[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_arready" type="array">
+         <obj_property name="ElementShortName">m_axi_arready[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_arready[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_rid" type="array">
+         <obj_property name="ElementShortName">m_axi_rid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_rid[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_rdata" type="array">
+         <obj_property name="ElementShortName">m_axi_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_rresp" type="array">
+         <obj_property name="ElementShortName">m_axi_rresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_rresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_rlast" type="array">
+         <obj_property name="ElementShortName">m_axi_rlast[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_rlast[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_rvalid" type="array">
+         <obj_property name="ElementShortName">m_axi_rvalid[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_rvalid[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/u_axi_cache_bridge/m_axi_rready" type="array">
+         <obj_property name="ElementShortName">m_axi_rready[0:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axi_rready[0:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/clk" type="logic">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/resetn" type="logic">
+         <obj_property name="ElementShortName">resetn</obj_property>
+         <obj_property name="ObjectShortName">resetn</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/int" type="array">
+         <obj_property name="ElementShortName">int[5:0]</obj_property>
+         <obj_property name="ObjectShortName">int[5:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_req" type="logic">
+         <obj_property name="ElementShortName">inst_req</obj_property>
+         <obj_property name="ObjectShortName">inst_req</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_cache" type="logic">
+         <obj_property name="ElementShortName">inst_cache</obj_property>
+         <obj_property name="ObjectShortName">inst_cache</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_addr" type="array">
+         <obj_property name="ElementShortName">inst_addr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">inst_addr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_rdata" type="array">
+         <obj_property name="ElementShortName">inst_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">inst_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_addr_ok" type="logic">
+         <obj_property name="ElementShortName">inst_addr_ok</obj_property>
+         <obj_property name="ObjectShortName">inst_addr_ok</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_data_ok" type="logic">
+         <obj_property name="ElementShortName">inst_data_ok</obj_property>
+         <obj_property name="ObjectShortName">inst_data_ok</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_req" type="logic">
+         <obj_property name="ElementShortName">data_req</obj_property>
+         <obj_property name="ObjectShortName">data_req</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_cache" type="logic">
+         <obj_property name="ElementShortName">data_cache</obj_property>
+         <obj_property name="ObjectShortName">data_cache</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_wr" type="logic">
+         <obj_property name="ElementShortName">data_wr</obj_property>
+         <obj_property name="ObjectShortName">data_wr</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_wstrb" type="array">
+         <obj_property name="ElementShortName">data_wstrb[3:0]</obj_property>
+         <obj_property name="ObjectShortName">data_wstrb[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_addr" type="array">
+         <obj_property name="ElementShortName">data_addr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_addr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_size" type="array">
+         <obj_property name="ElementShortName">data_size[2:0]</obj_property>
+         <obj_property name="ObjectShortName">data_size[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_wdata" type="array">
+         <obj_property name="ElementShortName">data_wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_rdata" type="array">
+         <obj_property name="ElementShortName">data_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_addr_ok" type="logic">
+         <obj_property name="ElementShortName">data_addr_ok</obj_property>
+         <obj_property name="ObjectShortName">data_addr_ok</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_data_ok" type="logic">
+         <obj_property name="ElementShortName">data_data_ok</obj_property>
+         <obj_property name="ObjectShortName">data_data_ok</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/debug_wb_pc" type="array">
+         <obj_property name="ElementShortName">debug_wb_pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">debug_wb_pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/debug_wb_rf_wen" type="array">
+         <obj_property name="ElementShortName">debug_wb_rf_wen[3:0]</obj_property>
+         <obj_property name="ObjectShortName">debug_wb_rf_wen[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/debug_wb_rf_wnum" type="array">
+         <obj_property name="ElementShortName">debug_wb_rf_wnum[4:0]</obj_property>
+         <obj_property name="ObjectShortName">debug_wb_rf_wnum[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/debug_wb_rf_wdata" type="array">
+         <obj_property name="ElementShortName">debug_wb_rf_wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">debug_wb_rf_wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/int_sig" type="logic">
+         <obj_property name="ElementShortName">int_sig</obj_property>
+         <obj_property name="ObjectShortName">int_sig</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/commit" type="logic">
+         <obj_property name="ElementShortName">commit</obj_property>
+         <obj_property name="ObjectShortName">commit</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/commit_miss" type="logic">
+         <obj_property name="ElementShortName">commit_miss</obj_property>
+         <obj_property name="ObjectShortName">commit_miss</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/commit_bd" type="logic">
+         <obj_property name="ElementShortName">commit_bd</obj_property>
+         <obj_property name="ObjectShortName">commit_bd</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/commit_eret" type="logic">
+         <obj_property name="ElementShortName">commit_eret</obj_property>
+         <obj_property name="ObjectShortName">commit_eret</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/commit_code" type="array">
+         <obj_property name="ElementShortName">commit_code[4:0]</obj_property>
+         <obj_property name="ObjectShortName">commit_code[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/commit_epc" type="array">
+         <obj_property name="ElementShortName">commit_epc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">commit_epc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/commit_bvaddr" type="array">
+         <obj_property name="ElementShortName">commit_bvaddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">commit_bvaddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_w" type="logic">
+         <obj_property name="ElementShortName">cp0_w</obj_property>
+         <obj_property name="ObjectShortName">cp0_w</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_wdata" type="array">
+         <obj_property name="ElementShortName">cp0_wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_rdata" type="array">
+         <obj_property name="ElementShortName">cp0_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_addr" type="array">
+         <obj_property name="ElementShortName">cp0_addr[7:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_addr[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_index" type="array">
+         <obj_property name="ElementShortName">cp0_index[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_index[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_random" type="array">
+         <obj_property name="ElementShortName">cp0_random[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_random[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_entrylo0" type="array">
+         <obj_property name="ElementShortName">cp0_entrylo0[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_entrylo0[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_entrylo1" type="array">
+         <obj_property name="ElementShortName">cp0_entrylo1[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_entrylo1[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_entryhi" type="array">
+         <obj_property name="ElementShortName">cp0_entryhi[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_entryhi[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_mask" type="array">
+         <obj_property name="ElementShortName">cp0_mask[11:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_mask[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_status" type="array">
+         <obj_property name="ElementShortName">cp0_status[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_status[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_cause" type="array">
+         <obj_property name="ElementShortName">cp0_cause[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_cause[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_epc" type="array">
+         <obj_property name="ElementShortName">cp0_epc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_epc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/cp0_ebase" type="array">
+         <obj_property name="ElementShortName">cp0_ebase[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cp0_ebase[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/config_k0" type="array">
+         <obj_property name="ElementShortName">config_k0[2:0]</obj_property>
+         <obj_property name="ObjectShortName">config_k0[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbr" type="logic">
+         <obj_property name="ElementShortName">tlbr</obj_property>
+         <obj_property name="ObjectShortName">tlbr</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbwi" type="logic">
+         <obj_property name="ElementShortName">tlbwi</obj_property>
+         <obj_property name="ObjectShortName">tlbwi</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbwr" type="logic">
+         <obj_property name="ElementShortName">tlbwr</obj_property>
+         <obj_property name="ObjectShortName">tlbwr</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbp" type="logic">
+         <obj_property name="ElementShortName">tlbp</obj_property>
+         <obj_property name="ObjectShortName">tlbp</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbr_lo0" type="array">
+         <obj_property name="ElementShortName">tlbr_lo0[31:0]</obj_property>
+         <obj_property name="ObjectShortName">tlbr_lo0[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbr_lo1" type="array">
+         <obj_property name="ElementShortName">tlbr_lo1[31:0]</obj_property>
+         <obj_property name="ObjectShortName">tlbr_lo1[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbr_hi" type="array">
+         <obj_property name="ElementShortName">tlbr_hi[31:0]</obj_property>
+         <obj_property name="ObjectShortName">tlbr_hi[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbp_index" type="array">
+         <obj_property name="ElementShortName">tlbp_index[31:0]</obj_property>
+         <obj_property name="ObjectShortName">tlbp_index[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbr_mask" type="array">
+         <obj_property name="ElementShortName">tlbr_mask[11:0]</obj_property>
+         <obj_property name="ObjectShortName">tlbr_mask[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_vaddr" type="array">
+         <obj_property name="ElementShortName">inst_vaddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">inst_vaddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_vaddr" type="array">
+         <obj_property name="ElementShortName">data_vaddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_vaddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_paddr" type="array">
+         <obj_property name="ElementShortName">inst_paddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">inst_paddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_paddr" type="array">
+         <obj_property name="ElementShortName">data_paddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_paddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_cattr" type="array">
+         <obj_property name="ElementShortName">inst_cattr[2:0]</obj_property>
+         <obj_property name="ObjectShortName">inst_cattr[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_cattr" type="array">
+         <obj_property name="ElementShortName">data_cattr[2:0]</obj_property>
+         <obj_property name="ObjectShortName">data_cattr[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_miss" type="logic">
+         <obj_property name="ElementShortName">inst_miss</obj_property>
+         <obj_property name="ObjectShortName">inst_miss</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_miss" type="logic">
+         <obj_property name="ElementShortName">data_miss</obj_property>
+         <obj_property name="ObjectShortName">data_miss</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/inst_invalid" type="logic">
+         <obj_property name="ElementShortName">inst_invalid</obj_property>
+         <obj_property name="ObjectShortName">inst_invalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_invalid" type="logic">
+         <obj_property name="ElementShortName">data_invalid</obj_property>
+         <obj_property name="ObjectShortName">data_invalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/data_dirty" type="logic">
+         <obj_property name="ElementShortName">data_dirty</obj_property>
+         <obj_property name="ObjectShortName">data_dirty</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/tlbw_idx" type="array">
+         <obj_property name="ElementShortName">tlbw_idx[4:0]</obj_property>
+         <obj_property name="ObjectShortName">tlbw_idx[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/if_valid" type="logic">
+         <obj_property name="ElementShortName">if_valid</obj_property>
+         <obj_property name="ObjectShortName">if_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/if_ready" type="logic">
+         <obj_property name="ElementShortName">if_ready</obj_property>
+         <obj_property name="ObjectShortName">if_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/if_pc" type="array">
+         <obj_property name="ElementShortName">if_pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">if_pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/if_id_valid" type="logic">
+         <obj_property name="ElementShortName">if_id_valid</obj_property>
+         <obj_property name="ObjectShortName">if_id_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_if_ready" type="logic">
+         <obj_property name="ElementShortName">id_if_ready</obj_property>
+         <obj_property name="ObjectShortName">id_if_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/if_id_pc" type="array">
+         <obj_property name="ElementShortName">if_id_pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">if_id_pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/if_id_cancelled" type="logic">
+         <obj_property name="ElementShortName">if_id_cancelled</obj_property>
+         <obj_property name="ObjectShortName">if_id_cancelled</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/if_id_exc" type="logic">
+         <obj_property name="ElementShortName">if_id_exc</obj_property>
+         <obj_property name="ObjectShortName">if_id_exc</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/if_id_exc_miss" type="logic">
+         <obj_property name="ElementShortName">if_id_exc_miss</obj_property>
+         <obj_property name="ObjectShortName">if_id_exc_miss</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/if_id_exccode" type="array">
+         <obj_property name="ElementShortName">if_id_exccode[4:0]</obj_property>
+         <obj_property name="ObjectShortName">if_id_exccode[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/branch" type="logic">
+         <obj_property name="ElementShortName">branch</obj_property>
+         <obj_property name="ObjectShortName">branch</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/branch_pc" type="array">
+         <obj_property name="ElementShortName">branch_pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">branch_pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/vector" type="array">
+         <obj_property name="ElementShortName">vector[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vector[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/pc" type="array">
+         <obj_property name="ElementShortName">pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/next_pc" type="array">
+         <obj_property name="ElementShortName">next_pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">next_pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/rf_raddr1" type="array">
+         <obj_property name="ElementShortName">rf_raddr1[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_raddr1[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/rf_raddr2" type="array">
+         <obj_property name="ElementShortName">rf_raddr2[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_raddr2[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/rf_waddr" type="array">
+         <obj_property name="ElementShortName">rf_waddr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_waddr[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/rf_rdata1" type="array">
+         <obj_property name="ElementShortName">rf_rdata1[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_rdata1[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/rf_rdata2" type="array">
+         <obj_property name="ElementShortName">rf_rdata2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_rdata2[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/rf_wdata" type="array">
+         <obj_property name="ElementShortName">rf_wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/rf_wen" type="logic">
+         <obj_property name="ElementShortName">rf_wen</obj_property>
+         <obj_property name="ObjectShortName">rf_wen</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_fwd_addr" type="array">
+         <obj_property name="ElementShortName">ex_fwd_addr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">ex_fwd_addr[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/wb_fwd_addr" type="array">
+         <obj_property name="ElementShortName">wb_fwd_addr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">wb_fwd_addr[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_fwd_data" type="array">
+         <obj_property name="ElementShortName">ex_fwd_data[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ex_fwd_data[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/wb_fwd_data" type="array">
+         <obj_property name="ElementShortName">wb_fwd_data[31:0]</obj_property>
+         <obj_property name="ObjectShortName">wb_fwd_data[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_fwd_ok" type="logic">
+         <obj_property name="ElementShortName">ex_fwd_ok</obj_property>
+         <obj_property name="ObjectShortName">ex_fwd_ok</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/wb_fwd_ok" type="logic">
+         <obj_property name="ElementShortName">wb_fwd_ok</obj_property>
+         <obj_property name="ObjectShortName">wb_fwd_ok</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_valid" type="logic">
+         <obj_property name="ElementShortName">id_ex_valid</obj_property>
+         <obj_property name="ObjectShortName">id_ex_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_id_ready" type="logic">
+         <obj_property name="ElementShortName">ex_id_ready</obj_property>
+         <obj_property name="ObjectShortName">ex_id_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_done" type="logic">
+         <obj_property name="ElementShortName">id_done</obj_property>
+         <obj_property name="ObjectShortName">id_done</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_pc" type="array">
+         <obj_property name="ElementShortName">id_ex_pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">id_ex_pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_inst" type="array">
+         <obj_property name="ElementShortName">id_ex_inst[31:0]</obj_property>
+         <obj_property name="ObjectShortName">id_ex_inst[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_decoded" type="array">
+         <obj_property name="ElementShortName">id_ex_decoded[99:0]</obj_property>
+         <obj_property name="ObjectShortName">id_ex_decoded[99:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_rdata1" type="array">
+         <obj_property name="ElementShortName">id_ex_rdata1[31:0]</obj_property>
+         <obj_property name="ObjectShortName">id_ex_rdata1[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_rdata2" type="array">
+         <obj_property name="ElementShortName">id_ex_rdata2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">id_ex_rdata2[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_pc_j" type="array">
+         <obj_property name="ElementShortName">id_ex_pc_j[31:0]</obj_property>
+         <obj_property name="ObjectShortName">id_ex_pc_j[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_pc_b" type="array">
+         <obj_property name="ElementShortName">id_ex_pc_b[31:0]</obj_property>
+         <obj_property name="ObjectShortName">id_ex_pc_b[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_exc" type="logic">
+         <obj_property name="ElementShortName">id_ex_exc</obj_property>
+         <obj_property name="ObjectShortName">id_ex_exc</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_exc_miss" type="logic">
+         <obj_property name="ElementShortName">id_ex_exc_miss</obj_property>
+         <obj_property name="ObjectShortName">id_ex_exc_miss</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/id_ex_exccode" type="array">
+         <obj_property name="ElementShortName">id_ex_exccode[4:0]</obj_property>
+         <obj_property name="ObjectShortName">id_ex_exccode[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_wb_valid" type="logic">
+         <obj_property name="ElementShortName">ex_wb_valid</obj_property>
+         <obj_property name="ObjectShortName">ex_wb_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/wb_ex_ready" type="logic">
+         <obj_property name="ElementShortName">wb_ex_ready</obj_property>
+         <obj_property name="ObjectShortName">wb_ex_ready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_done" type="logic">
+         <obj_property name="ElementShortName">ex_done</obj_property>
+         <obj_property name="ObjectShortName">ex_done</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_wb_pc" type="array">
+         <obj_property name="ElementShortName">ex_wb_pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ex_wb_pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_wb_inst" type="array">
+         <obj_property name="ElementShortName">ex_wb_inst[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ex_wb_inst[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_wb_ctrl" type="array">
+         <obj_property name="ElementShortName">ex_wb_ctrl[15:0]</obj_property>
+         <obj_property name="ObjectShortName">ex_wb_ctrl[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_wb_result" type="array">
+         <obj_property name="ElementShortName">ex_wb_result[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ex_wb_result[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_wb_eaddr" type="array">
+         <obj_property name="ElementShortName">ex_wb_eaddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ex_wb_eaddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_wb_rdata2" type="array">
+         <obj_property name="ElementShortName">ex_wb_rdata2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ex_wb_rdata2[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/ex_wb_waddr" type="array">
+         <obj_property name="ElementShortName">ex_wb_waddr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">ex_wb_waddr[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/godson_system/soc_up_top/cpu_mid/cpu/wb_done" type="logic">
+         <obj_property name="ElementShortName">wb_done</obj_property>
+         <obj_property name="ObjectShortName">wb_done</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

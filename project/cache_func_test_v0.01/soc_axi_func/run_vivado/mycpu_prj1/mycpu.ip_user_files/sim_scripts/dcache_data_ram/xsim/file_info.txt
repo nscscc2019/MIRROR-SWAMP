@@ -1,0 +1,2 @@
+dcache_data_ram.v,verilog,xil_defaultlib,../../../../../../rtl/MIRROR_SWAMP/cache/dcache_data_ram/sim/dcache_data_ram.v,
+glbl.v,Verilog,xil_defaultlib,glbl.v
