@@ -17,6 +17,7 @@ module execute_stage(
     // branch/jump signals
     output                      branch,
     input                       branch_ready,
+    output                      blikely_clear,
     output  [31:0]              target_pc,
     
     // tlb
@@ -196,6 +197,7 @@ module execute_stage(
     wire do_bltz    = op_bltz||op_bltzl||op_bltzal||op_bltzall;
     wire do_j       = op_j||op_jal;
     wire do_jr      = op_jr||op_jalr;
+    wire likely     = op_bltzl||op_bgezl||op_bltzall||op_bgezall||op_beql||op_bnel||op_blezl||op_bgtzl;
     
     wire [4:0] waddr = {5{inst_rt_wex||inst_rt_wwb}}    & `GET_RT(inst_i)
                      | {5{inst_rd_wex}}                 & `GET_RD(inst_i)
@@ -377,7 +379,8 @@ module execute_stage(
                        || (do_bgtz && !(rdata1_i[31] || rdata1_i == 32'd0))
                        || (do_bltz && rdata1_i[31]);
 
-    assign branch       = valid && branch_ready && (do_j||do_jr||branch_taken); // && done_o
+    assign branch           = valid && branch_ready && (do_j||do_jr||branch_taken);
+    assign blikely_clear    = valid && branch_ready && likely && !branch_taken;
     
     assign target_pc    = {32{!(do_j||do_jr)}} & pc_b_i
                         | {32{do_jr}} & rdata1_i
@@ -462,7 +465,14 @@ module execute_stage(
     end
     
     always @(posedge clk) begin
-        if (qstate == 2'd1) begin
+        if (!resetn) begin
+            tlbc_vaddr_hi <= 20'd0;
+            tlbc_paddr_hi <= 20'd0;
+            tlbc_miss <= 1'b0;
+            tlbc_invalid <= 1'b0;
+            tlbc_cattr <= 3'd0;
+        end
+        else if (qstate == 2'd1) begin
             tlbc_vaddr_hi <= ea_aligned_save[31:12];
             tlbc_paddr_hi <= tlb_paddr[31:12];
             tlbc_miss <= tlb_miss;
@@ -558,11 +568,11 @@ module execute_stage(
     assign commit_eret = !cp0u && op_eret;
     
     wire done_nonmem = ((op_mfhi||op_mflo||op_mthi||op_mtlo||op_madd||op_maddu||op_msub||op_msubu) && !muldiv
-                    ||  (do_j||do_jr||branch_taken) && branch_ready
+                    ||  (do_j||do_jr||branch_taken||likely) && branch_ready
                     ||  (op_mul) && mul_flag[0]
                     ||  (do_cloz) && cloz_ok
                     || !(op_mfhi||op_mflo||op_mthi||op_mtlo||op_madd||op_maddu||op_msub||op_msubu||
-                         do_j||do_jr||branch_taken||op_mul||do_cloz||ctrl_sig[`I_MEM_R]||ctrl_sig[`I_MEM_W]||op_cache));
+                         do_j||do_jr||branch_taken||likely||op_mul||do_cloz||ctrl_sig[`I_MEM_R]||ctrl_sig[`I_MEM_W]||op_cache));
     assign done_o   = done_nonmem
                    || (ctrl_sig[`I_MEM_R]||ctrl_sig[`I_MEM_W]) && (data_addr_ok)
                    || op_cache && cache_op_ok

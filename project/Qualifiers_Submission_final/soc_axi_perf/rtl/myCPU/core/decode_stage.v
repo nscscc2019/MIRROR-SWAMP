@@ -172,10 +172,18 @@ module decode_stage(
     wire op_tlbwr     = op_d[16] && rs_d[16] && rt_d[0] && rd_d[0] && sa_d[0] && func_d[6];
     wire op_tlbp      = op_d[16] && rs_d[16] && rt_d[0] && rd_d[0] && sa_d[0] && func_d[8];
     wire op_eret      = op_d[16] && rs_d[16] && rt_d[0] && rd_d[0] && sa_d[0] && func_d[24];
+    wire op_wait      = op_d[16] && inst[25] && func_d[32];
     wire op_beql      = op_d[20];
     wire op_bnel      = op_d[21];
     wire op_blezl     = op_d[22] && rt_d[0];
     wire op_bgtzl     = op_d[23] && rt_d[0];
+    wire op_madd      = op_d[28] && rd_d[0] && sa_d[0] && func_d[0];
+    wire op_maddu     = op_d[28] && rd_d[0] && sa_d[0] && func_d[1];
+    wire op_mul       = op_d[28] && sa_d[0] && func_d[2];
+    wire op_msub      = op_d[28] && rd_d[0] && sa_d[0] && func_d[4];
+    wire op_msubu     = op_d[28] && rd_d[0] && sa_d[0] && func_d[5];
+    wire op_clz       = op_d[28] && sa_d[0] && func_d[32];
+    wire op_clo       = op_d[28] && sa_d[0] && func_d[33];
     wire op_lb        = op_d[32];
     wire op_lh        = op_d[33];
     wire op_lwl       = op_d[34];
@@ -189,6 +197,9 @@ module decode_stage(
     wire op_sw        = op_d[43];
     wire op_swr       = op_d[46];
     wire op_cache     = op_d[47];
+    wire op_ll        = op_d[48];
+    wire op_pref      = op_d[51];
+    wire op_sc        = op_d[56];
     
     wire [99:0] decoded;
     assign decoded = {
@@ -199,10 +210,11 @@ module decode_stage(
         op_tge, op_tgeu, op_tlt, op_tltu, op_teq, op_tne, op_bltz,op_bgez,op_bltzl,op_bgezl,
         op_tgei, op_tgeiu, op_tlti, op_tltiu, op_teqi, op_tnei, op_bltzal,op_bgezal,op_bltzall,op_bgezall,
         op_j,op_jal,op_beq,op_bne,op_blez,op_bgtz,
-        op_beql,op_bnel,op_blezl,op_bgtzl,
         op_addi,op_addiu,op_slti,op_sltiu,op_andi,op_ori,op_xori,op_lui,
-        op_mfc0,op_mtc0,op_tlbr,op_tlbwi,op_tlbwr,op_tlbp,op_eret,
-        op_lb,op_lh,op_lwl,op_lw,op_lbu,op_lhu,op_lwr,op_sb,op_sh,op_swl,op_sw,op_swr,op_cache
+        op_mfc0,op_mtc0,op_tlbr,op_tlbwi,op_tlbwr,op_tlbp,op_eret,op_wait,
+        op_beql,op_bnel,op_blezl,op_bgtzl,
+        op_madd,op_maddu,op_mul,op_msub,op_msubu,op_clz,op_clo,
+        op_lb,op_lh,op_lwl,op_lw,op_lbu,op_lhu,op_lwr,op_sb,op_sh,op_swl,op_sw,op_swr,op_cache,op_ll,op_pref,op_sc
     };
     
     assign rf_raddr1 = `GET_RS(inst);
@@ -211,10 +223,10 @@ module decode_stage(
     // data forwarding
     // `I_RS_R & `I_RT_R check is omitted for enhanced timing
     // this may introduce false data hazards but no forwarding errors
-    wire fwd_ex_raddr1_hit  = rf_raddr1 != 5'd0 && rf_raddr1 == ex_fwd_addr;
-    wire fwd_ex_raddr2_hit  = rf_raddr2 != 5'd0 && rf_raddr2 == ex_fwd_addr;
-    wire fwd_wb_raddr1_hit  = rf_raddr1 != 5'd0 && rf_raddr1 == wb_fwd_addr;
-    wire fwd_wb_raddr2_hit  = rf_raddr2 != 5'd0 && rf_raddr2 == wb_fwd_addr;
+    wire fwd_ex_raddr1_hit  = ex_fwd_addr != 5'd0 && rf_raddr1 == ex_fwd_addr;
+    wire fwd_ex_raddr2_hit  = ex_fwd_addr != 5'd0 && rf_raddr2 == ex_fwd_addr;
+    wire fwd_wb_raddr1_hit  = wb_fwd_addr != 5'd0 && rf_raddr1 == wb_fwd_addr;
+    wire fwd_wb_raddr2_hit  = wb_fwd_addr != 5'd0 && rf_raddr2 == wb_fwd_addr;
     
     wire [31:0] fwd_rdata1  = fwd_ex_raddr1_hit ? ex_fwd_data
                             : fwd_wb_raddr1_hit ? wb_fwd_data

@@ -69,9 +69,9 @@ module decode_stage(
     reg done;
     
     reg [31:0] inst_save;
-    reg inst_saved;
+    always @(posedge clk) if (inst_data_ok) inst_save <= inst_rdata;
     
-    always @(posedge clk) if (inst_data_ok && !inst_saved) inst_save <= inst_rdata;
+    reg inst_saved;
     always @(posedge clk) begin
         if (!resetn) inst_saved <= 1'b0;
         else if (done_o && ready_i) inst_saved <= 1'b0;

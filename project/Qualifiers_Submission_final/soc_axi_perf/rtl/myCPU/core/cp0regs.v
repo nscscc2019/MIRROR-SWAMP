@@ -40,8 +40,8 @@ module cp0regs(
     output  [31:0]      status,
     output  [31:0]      cause,
     output reg [31:0]   epc,
-    output  [31:0]      ebase,
-    output reg [2:0]    config_k0
+    output reg [2:0]    config_k0,
+    output reg [31:0]   taglo
 );
 
     wire [5:0] hw_int;
@@ -333,22 +333,7 @@ module cp0regs(
     end
     
     // PRId (15, 0)
-    wire [31:0] prid = 32'd0; // TODO
-    
-    // EBase (15, 1)
-    reg [17:0] ebase_base;
-    assign ebase = {
-        2'b10,
-        ebase_base, // 29:12
-        2'd0,
-        10'd0
-    };
-    
-    wire ebase_write = mtc0 && addr == `CP0_EBASE;
-    always @(posedge clk) begin
-        if (!resetn) ebase_base <= 18'd0;
-        else if (ebase_write) ebase_base <= mtc0_data[`EBASE_BASE];
-    end
+    wire [31:0] prid = 32'h00004220;
     
     // Config (16, 0)
     wire [31:0] config0 = {
@@ -377,7 +362,7 @@ module cp0regs(
         6'd31,  // TLB entries = 32
         3'd1,   // Icache sets = 128
         3'd4,   // Icache line size = 32
-        3'd1,   // Icache associativity = 2
+        3'd3,   // Icache associativity = 4
         3'd1,   // Dcache sets = 128
         3'd4,   // Dcache line size = 32
         3'd1,   // Dcache associativity = 2
@@ -391,7 +376,6 @@ module cp0regs(
     };
     
     // TagLo (28, 0)
-    reg [31:0] taglo;
     wire taglo_write = mtc0 && addr == `CP0_TAGLO;
     always @(posedge clk) begin
         if (taglo_write) taglo <= mtc0_data;
@@ -422,7 +406,6 @@ module cp0regs(
         {32{addr == `CP0_CAUSE      }} & cause      |
         {32{addr == `CP0_EPC        }} & epc        |
         {32{addr == `CP0_PRID       }} & prid       |
-        {32{addr == `CP0_EBASE      }} & ebase      |
         {32{addr == `CP0_CONFIG     }} & config0    |
         {32{addr == `CP0_CONFIG1    }} & config1    |
         {32{addr == `CP0_TAGLO      }} & taglo      ;

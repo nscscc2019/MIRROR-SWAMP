@@ -12,7 +12,7 @@ module mips_cpu(
     output              inst_cache,
     output  [31:0]      inst_addr,
     input   [31:0]      inst_rdata,
-   input               inst_addr_ok,
+    input               inst_addr_ok,
     input               inst_data_ok,
     output              data_req,
     output              data_cache,
@@ -24,6 +24,11 @@ module mips_cpu(
     input   [31:0]      data_rdata,
     input               data_addr_ok,
     input               data_data_ok,
+    
+    output              cache_req,
+    output  [6 :0]      cache_op,
+    output  [31:0]      cache_tag,
+    input               cache_op_ok,
 
     //debug interface
     output  [31:0]      debug_wb_pc,
@@ -34,7 +39,7 @@ module mips_cpu(
     
     wire int_sig;
     
-    wire commit, commit_miss, commit_bd, commit_eret;
+    wire commit, commit_miss, commit_int, commit_bd, commit_eret;
     wire [4:0] commit_code;
     wire [31:0] commit_epc, commit_bvaddr;
     
@@ -44,7 +49,7 @@ module mips_cpu(
     
     wire [31:0] cp0_index, cp0_random, cp0_entrylo0, cp0_entrylo1, cp0_entryhi;
     wire [11:0] cp0_mask;
-    wire [31:0] cp0_status, cp0_cause, cp0_epc, cp0_ebase;
+    wire [31:0] cp0_status, cp0_cause, cp0_epc;
     wire [2:0] config_k0;
     
     wire tlbr, tlbwi, tlbwr, tlbp;
@@ -83,8 +88,8 @@ module mips_cpu(
         .status         (cp0_status),
         .cause          (cp0_cause),
         .epc            (cp0_epc),
-        .ebase          (cp0_ebase),
-        .config_k0      (config_k0)
+        .config_k0      (config_k0),
+        .taglo          (cache_tag)
     );
     
     // Address Translation
@@ -128,18 +133,32 @@ module mips_cpu(
     
     wire if_valid;
     wire if_ready;
-     wire [31:0] if_pc;
+    wire [31:0] if_pc;
     wire if_id_valid, id_if_ready;
-     wire [31:0] if_id_pc;
+    wire [31:0] if_id_pc;
     wire if_id_cancelled, if_id_exc, if_id_exc_miss;
     wire [4:0] if_id_exccode;
     
-    wire branch;
+    wire branch, blikely_clear;
     wire [31:0] branch_pc;
     
-    wire [31:0] vector =    commit_eret ? cp0_epc :
-                            commit_miss ? `VEC_REFILL_BEV :
-                            `VEC_OTHER_BEV;
+    wire bev = cp0_status[`STATUS_BEV];
+    wire exl = cp0_status[`STATUS_EXL];
+    wire iv  = cp0_cause [`CAUSE_IV];
+    wire [31:0] vector_miss     = {32{!bev&&!exl}} & `VEC_REFILL
+                                | {32{!bev&& exl}} & `VEC_REFILL_EXL
+                                | {32{ bev&&!exl}} & `VEC_REFILL_BEV
+                                | {32{ bev&& exl}} & `VEC_REFILL_BEV_EXL;
+    wire [31:0] vector_intr     = {32{!bev&&!iv }} & `VEC_INTR
+                                | {32{!bev&& iv }} & `VEC_INTR_IV
+                                | {32{ bev&&!iv }} & `VEC_INTR_BEV
+                                | {32{ bev&& iv }} & `VEC_INTR_BEV_IV;
+    wire [31:0] vector_other    = {32{!bev      }} & `VEC_OTHER
+                                | {32{ bev      }} & `VEC_OTHER_BEV;
+    wire [31:0] vector          = commit_eret ? cp0_epc
+                                : commit_miss ? vector_miss
+                                : commit_int  ? vector_intr
+                                : vector_other;
     
     reg [31:0] pc;
     (*keep = "true"*)wire [31:0] next_pc = if_pc + 32'd4;
@@ -167,6 +186,7 @@ module mips_cpu(
         .tlb_miss       (inst_miss),
         .tlb_invalid    (inst_invalid),
         .tlb_cattr      (inst_cattr),
+        .status         (cp0_status),
         .config_k0      (config_k0),
         .ready_o        (if_ready),
         .valid_i        (if_valid),
@@ -243,7 +263,7 @@ module mips_cpu(
         .exc_o          (id_ex_exc),
         .exc_miss_o     (id_ex_exc_miss),
         .exccode_o      (id_ex_exccode),
-        .cancel_i       (commit)
+        .cancel_i       (commit||blikely_clear)
     );
     
     //////////////////// EX ////////////////////
@@ -267,6 +287,7 @@ module mips_cpu(
         .data_addr_ok   (data_addr_ok),
         .branch         (branch),
         .branch_ready   (if_id_valid),
+        .blikely_clear  (blikely_clear),
         .target_pc      (branch_pc),
         .tlb_vaddr      (data_vaddr),
         .tlb_paddr      (data_paddr),
@@ -274,6 +295,10 @@ module mips_cpu(
         .tlb_invalid    (data_invalid),
         .tlb_dirty      (data_dirty),
         .tlb_cattr      (data_cattr),
+        .cache_req      (cache_req),
+        .cache_op       (cache_op),
+        .cache_op_ok    (cache_op_ok),
+        .status         (cp0_status),
         .config_k0      (config_k0),
         .int_sig        (int_sig),
         .fwd_addr       (ex_fwd_addr),
@@ -310,6 +335,7 @@ module mips_cpu(
         .exccode_i      (id_ex_exccode),
         .commit         (commit),
         .commit_miss    (commit_miss),
+        .commit_int     (commit_int),
         .commit_code    (commit_code),
         .commit_bd      (commit_bd),
         .commit_epc     (commit_epc),

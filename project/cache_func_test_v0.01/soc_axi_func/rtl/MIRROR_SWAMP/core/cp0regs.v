@@ -189,7 +189,7 @@ module cp0regs(
     end
     
     // BadVAddr (8, 0)
-    (*mark_debug="true"*) reg [31:0] badvaddr;
+    reg [31:0] badvaddr;
     always @(posedge clk) begin
         if (exception_commit && exception_mem) badvaddr <= commit_bvaddr;
     end

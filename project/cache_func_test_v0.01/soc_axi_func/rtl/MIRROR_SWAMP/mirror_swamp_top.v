@@ -1,5 +1,5 @@
-`define USE_DATA_CACHE
-//`define FORCE_INST_CACHE
+//`define USE_DATA_CACHE
+`define FORCE_INST_CACHE
 
 module mycpu_top(
     input [5:0] int,   //high active
@@ -9,46 +9,46 @@ module mycpu_top(
 
     //axi
     //ar
-    output [3:0] arid,
-    output [31:0] araddr,
-    output [3:0] arlen,
-    output [2:0] arsize,
-    output [1:0] arburst,
-    output [1:0] arlock,
-    output [3:0] arcache,
-    output [2:0] arprot,
-    output arvalid,
-    input arready,
+    (*mark_debug="true"*) output [3:0] arid,
+    (*mark_debug="true"*) output [31:0] araddr,
+    (*mark_debug="true"*) output [3:0] arlen,
+    (*mark_debug="true"*) output [2:0] arsize,
+    (*mark_debug="true"*) output [1:0] arburst,
+    (*mark_debug="true"*) output [1:0] arlock,
+    (*mark_debug="true"*) output [3:0] arcache,
+    (*mark_debug="true"*) output [2:0] arprot,
+    (*mark_debug="true"*) output arvalid,
+    (*mark_debug="true"*) input arready,
     //r              
-    input [3:0] rid,
-    input [31:0] rdata,
-    input [1:0] rresp,
-    input rlast,
-    input rvalid,
-    output rready,
+    (*mark_debug="true"*) input [3:0] rid,
+    (*mark_debug="true"*) input [31:0] rdata,
+    (*mark_debug="true"*) input [1:0] rresp,
+    (*mark_debug="true"*) input rlast,
+    (*mark_debug="true"*) input rvalid,
+    (*mark_debug="true"*) output rready,
     //aw           
-    output [3:0] awid,
-    output [31:0] awaddr,
-    output [3:0] awlen,
-    output [2:0] awsize,
-    output [1:0] awburst,
-    output [1:0] awlock,
-    output [3:0] awcache,
-    output [2:0] awprot,
-    output awvalid,
-    input awready,
+    (*mark_debug="true"*) output [3:0] awid,
+    (*mark_debug="true"*) output [31:0] awaddr,
+    (*mark_debug="true"*) output [3:0] awlen,
+    (*mark_debug="true"*) output [2:0] awsize,
+    (*mark_debug="true"*) output [1:0] awburst,
+    (*mark_debug="true"*) output [1:0] awlock,
+    (*mark_debug="true"*) output [3:0] awcache,
+    (*mark_debug="true"*) output [2:0] awprot,
+    (*mark_debug="true"*) output awvalid,
+    (*mark_debug="true"*) input awready,
     //w          
-    output [3:0] wid,
-    output [31:0] wdata,
-    output [3:0] wstrb,
-    output wlast,
-    output wvalid,
-    input wready,
+    (*mark_debug="true"*) output [3:0] wid,
+    (*mark_debug="true"*) output [31:0] wdata,
+    (*mark_debug="true"*) output [3:0] wstrb,
+    (*mark_debug="true"*) output wlast,
+    (*mark_debug="true"*) output wvalid,
+    (*mark_debug="true"*) input wready,
     //b              
-    input [3:0] bid,
-    input [1:0] bresp,
-    input bvalid,
-    output bready,
+    (*mark_debug="true"*) input [3:0] bid,
+    (*mark_debug="true"*) input [1:0] bresp,
+    (*mark_debug="true"*) input bvalid,
+    (*mark_debug="true"*) output bready,
 
     //debug interface
     output  [31:0]   debug_wb_pc,
@@ -73,6 +73,22 @@ module mycpu_top(
     always@(posedge aclk)
     begin
         cache_op_counter <= !aresetn ? 16'b0 : (cache_req & cache_op_ok) ? (cache_op_counter+16'b1) : cache_op_counter;
+    end
+    
+    // for os debug
+    (*mark_debug="true"*) reg [31:0] cache_w_counter;
+    (*mark_debug="true"*) reg [31:0] cache_r_counter;
+    (*mark_debug="true"*) reg [31:0] uncache_w_counter;
+    (*mark_debug="true"*) reg [31:0] uncache_r_counter;
+    (*mark_debug="true"*) wire [31:0] total_w_counter = cache_w_counter + uncache_w_counter;
+    (*mark_debug="true"*) wire [31:0] total_r_counter = cache_r_counter + uncache_r_counter;
+    
+    always@(posedge aclk)
+    begin
+        cache_w_counter <= !aresetn ? 32'b0 : (cpu_data_req & data_cache & cpu_data_cache_addr_ok & (cpu_data_wr)) ? (cache_w_counter+32'b1) : cache_w_counter;
+        cache_r_counter <= !aresetn ? 32'b0 : (cpu_data_req & data_cache & cpu_data_cache_addr_ok & (!cpu_data_wr)) ? (cache_r_counter+32'b1) : cache_r_counter;
+        uncache_w_counter <= !aresetn ? 32'b0 : (cpu_data_req & (!data_cache) & cpu_data_uncache_addr_ok & (cpu_data_wr)) ? (uncache_w_counter+32'b1) : uncache_w_counter;
+        uncache_r_counter <= !aresetn ? 32'b0 : (cpu_data_req & (!data_cache) & cpu_data_uncache_addr_ok & (!cpu_data_wr)) ? (uncache_r_counter+32'b1) : uncache_r_counter;
     end
     
     (*mark_debug="true"*) wire dbg_clk = aclk;
@@ -266,7 +282,7 @@ module mycpu_top(
     wire  [3 :0]uncached_data_arid   ;
     wire  [31:0]uncached_data_araddr ;
     wire  [7 :0]uncached_data_arlen  ;
-    wire  [2 :0]uncached_data_arsize ;
+    (*mark_debug="true"*) wire  [2 :0]uncached_data_arsize ;
     wire  [1 :0]uncached_data_arburst;
     wire  [1 :0]uncached_data_arlock ;
     wire  [3 :0]uncached_data_arcache;
@@ -325,8 +341,8 @@ module mycpu_top(
 
     wire        duncache_data_req;
     wire        duncache_data_wr;
-    wire [1 :0] duncache_data_size;
-    wire [31:0] duncache_data_addr;
+    (*mark_debug="true"*) wire [1 :0] duncache_data_size;
+    (*mark_debug="true"*) wire [31:0] duncache_data_addr;
     wire [31:0] duncache_data_wdata;
     wire [3 :0] duncache_data_wstrb;
     wire [31:0] duncache_data_rdata;
@@ -828,7 +844,7 @@ module mycpu_top(
         .s_axi_arid       ( {dcache_arid, icache_arid, uncached_data_arid,uncached_inst_arid}        ),
         .s_axi_araddr     ( {dcache_araddr, icache_araddr, uncached_data_araddr,uncached_inst_araddr}      ),
         .s_axi_arlen      ( {dcache_arlen[3:0], icache_arlen[3:0], uncached_data_arlen[3:0], uncached_inst_arlen[3:0]}  ),
-        .s_axi_arsize     ( {dcache_arsize, icache_arsize, 3'b010,3'b010}      ),
+        .s_axi_arsize     ( {dcache_arsize, icache_arsize, uncached_data_arsize,3'b010}      ),
         .s_axi_arburst    ( {dcache_arburst, icache_arburst, uncached_data_arburst,uncached_inst_arburst}     ),
         .s_axi_arlock     ( {dcache_arlock, icache_arlock, uncached_data_arlock,uncached_inst_arlock}      ),
         .s_axi_arcache    ( {dcache_arcache, icache_arcache, uncached_data_arcache,uncached_inst_arcache}     ),

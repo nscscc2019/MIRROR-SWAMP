@@ -24,7 +24,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/workpath/nscscc2019_ucas_llcw/project/soc_up/vivado_xpr/project_1/project_1/project_1.runs/mig_axi_32_synth_1'
+HD_PWD='C:/workpath/nscscc2019_ucas_llcw_final/project/soc_up/vivado_xpr/project_1/project_1/project_1.runs/mig_axi_32_synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

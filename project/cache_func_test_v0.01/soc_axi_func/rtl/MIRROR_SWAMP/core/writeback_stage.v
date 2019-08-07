@@ -23,7 +23,7 @@ module writeback_stage(
     input   [31:0]              rdata2_i,
     input   [4 :0]              waddr_i,
     
-    (*mark_debug="true"*) output reg [31:0]           perfcnt_inst,
+    output reg [31:0]           perfcnt_inst,
     output reg [31:0]           perfcnt_load,
     output reg [31:0]           perfcnt_store,
     output reg [31:0]           perfcnt_load_waitack,

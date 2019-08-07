@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="39" Path="C:/workpath/nscscc2019_ucas_llcw/project/soc_up/vivado_xpr/project_1/project_1/project_1.xpr">
+<Project Version="7" Minor="39" Path="C:/workpath/nscscc2019_ucas_llcw_final/project/soc_up/vivado_xpr/project_1/project_1/project_1.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="ed516687f232422f80e08993ac502a76"/>

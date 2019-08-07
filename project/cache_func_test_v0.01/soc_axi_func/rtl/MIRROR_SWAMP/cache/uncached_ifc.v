@@ -33,11 +33,11 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Modified by H.Q. Wang in 2019
 // These modules are used for uncached insts. Uncached insts may influence the core's perfmorance when running real OS (linux, for example).
-// In this project, we allocate axi_id as: (reallocated at 2019.8.4)
+// In this project, we allocate axi_id as:
 // 0, 1 dcache write, read
 // 2, 3 icache write, read
-// 2, 0 uncached data write, read
-// 0    uncached inst read
+// 5, 6 uncached data write, read
+// 7    uncached inst read
 
 // module cpu_axi_interface_x
 // (
@@ -259,31 +259,8 @@ reg [31:0] do_addr_r;
 reg [31:0] do_wdata_r;
 wire data_back;
 
-assign inst_addr_ok = (!do_req);
+assign inst_addr_ok = (!do_req) & inst_req;
 assign data_addr_ok = 1'b0;
-
-// FSM: do_axi_req
-// --------------------------------------------------------------
-// do_req     <= !resetn                       ? 1'b0 : 
-//               (inst_req)&&!do_req ? 1'b1 :
-//               data_back                     ? 1'b0 : do_req;
-// --------------------------------------------------------------
-// reg next_state;
-
-// always@(inst_req or data_back or resetn)
-// case(do_req)
-//     1'b0:
-//         next_state = inst_req ? 1'b1 : 1'b0;
-//     1'b1:
-//         next_state = data_back ?  1'b0 : 1'b1;
-// endcase
-
-// always@(posedge clk)
-// begin
-//     do_req <= !resetn ? 1'b0 : next_state;
-// end
-// FSM end
-
 always @(posedge clk)
 begin
     do_req     <= !resetn                       ? 1'b0 : 
@@ -304,7 +281,7 @@ assign inst_rdata   = rdata;
 reg addr_rcv;
 reg wdata_rcv;
 
-assign data_back = addr_rcv && (rvalid&&rready||bvalid&&bready) & (rid == 4'b0000);
+assign data_back = addr_rcv && (rvalid&&rready||bvalid&&bready);
 always @(posedge clk)
 begin
     addr_rcv  <= !resetn          ? 1'b0 :
@@ -316,7 +293,7 @@ begin
                  data_back      ? 1'b0 : wdata_rcv;
 end
 //ar
-assign arid    = 4'd0;
+assign arid    = 4'd7;
 assign araddr  = do_addr_r;
 assign arlen   = 8'd0;
 assign arsize  = do_size_r;
@@ -329,7 +306,7 @@ assign arvalid = do_req&&!do_wr_r&&!addr_rcv;
 assign rready  = 1'b1;
 
 //aw
-assign awid    = 4'd2;
+assign awid    = 4'd7;
 assign awaddr  = do_addr_r;
 assign awlen   = 8'd0;
 assign awsize  = do_size_r;
@@ -420,30 +397,7 @@ reg [31:0] do_wdata_r;
 wire data_back;
 
 assign inst_addr_ok = 1'b0;
-assign data_addr_ok = (!do_req) & data_req ;
-
-// // FSM: do_axi_req
-// // --------------------------------------------------------------
-// // do_req     <= !resetn                       ? 1'b0 : 
-// //               (data_req)&&!do_req ? 1'b1 :
-// //               data_back                     ? 1'b0 : do_req;
-// // --------------------------------------------------------------
-// reg next_state;
-
-// always@(data_req or data_back or resetn)
-// case(do_req)
-//     1'b0:
-//         next_state = data_req ? 1'b1 : 1'b0;
-//     1'b1:
-//         next_state = data_back ?  1'b0 : 1'b1;
-// endcase
-
-// always@(posedge clk)
-// begin
-//     do_req <= !resetn ? 1'b0 : next_state;
-// end
-// // FSM end
-
+assign data_addr_ok = (!do_req) & data_req;
 always @(posedge clk)
 begin
     do_req     <= !resetn                       ? 1'b0 : 
@@ -467,7 +421,7 @@ assign data_rdata   = rdata;
 reg addr_rcv;
 reg wdata_rcv;
 
-assign data_back = addr_rcv && (rvalid&&rready||bvalid&&bready)  & ((rid == 4'b0000)|(bid==4'b0010));
+assign data_back = addr_rcv && (rvalid&&rready||bvalid&&bready);
 always @(posedge clk)
 begin
     addr_rcv  <= !resetn          ? 1'b0 :
@@ -479,7 +433,7 @@ begin
                  data_back      ? 1'b0 : wdata_rcv;
 end
 //ar
-assign arid    = 4'd0;
+assign arid    = 4'd5;
 assign araddr  = do_addr_r;
 assign arlen   = 8'd0;
 assign arsize  = do_size_r;
@@ -492,7 +446,7 @@ assign arvalid = do_req&&!do_wr_r&&!addr_rcv;
 assign rready  = 1'b1;
 
 //aw
-assign awid    = 4'd2;
+assign awid    = 4'd6;
 assign awaddr  = do_addr_r;
 assign awlen   = 8'd0;
 assign awsize  = do_size_r;

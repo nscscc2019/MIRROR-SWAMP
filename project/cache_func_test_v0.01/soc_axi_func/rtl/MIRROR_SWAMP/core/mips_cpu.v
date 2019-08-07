@@ -39,17 +39,17 @@ module mips_cpu(
     
     wire int_sig;
     
-    (*mark_debug="true"*) wire commit, commit_miss, commit_int, commit_bd, commit_eret;
+    wire commit, commit_miss, commit_int, commit_bd, commit_eret;
     wire [4:0] commit_code;
-    (*mark_debug="true"*) wire [31:0] commit_epc, commit_bvaddr;
+    wire [31:0] commit_epc, commit_bvaddr;
     
     wire cp0_w;
     wire [31:0] cp0_wdata, cp0_rdata;
     wire [7:0] cp0_addr;
     
     wire [31:0] cp0_index, cp0_random, cp0_entrylo0, cp0_entrylo1, cp0_entryhi;
-    (*mark_debug="true"*) wire [11:0] cp0_mask;
-    (*mark_debug="true"*) wire [31:0] cp0_status, cp0_cause, cp0_epc;
+    wire [11:0] cp0_mask;
+    wire [31:0] cp0_status, cp0_cause, cp0_epc;
     wire [2:0] config_k0;
     
     wire tlbr, tlbwi, tlbwr, tlbp;
@@ -135,12 +135,11 @@ module mips_cpu(
     wire if_ready;
     wire [31:0] if_pc;
     wire if_id_valid, id_if_ready;
-    (*mark_debug="true"*) wire [31:0] if_id_pc;
+    wire [31:0] if_id_pc;
     wire if_id_cancelled, if_id_exc, if_id_exc_miss;
     wire [4:0] if_id_exccode;
     
-    wire ok_to_branch;
-    wire branch;
+    wire branch, blikely_clear;
     wire [31:0] branch_pc;
     
     wire bev = cp0_status[`STATUS_BEV];
@@ -199,8 +198,7 @@ module mips_cpu(
         .exc_o          (if_id_exc),
         .exc_miss_o     (if_id_exc_miss),
         .exccode_o      (if_id_exccode),
-        .commit_i       (commit),
-        .ok_to_branch   (ok_to_branch)
+        .commit_i       (commit)
     );
     
     //////////////////// ID ////////////////////
@@ -225,7 +223,7 @@ module mips_cpu(
     wire ex_fwd_ok, wb_fwd_ok;
     
     wire id_ex_valid, ex_id_ready, id_done;
-    (*mark_debug="true"*) wire [31:0] id_ex_pc, id_ex_inst;
+    wire [31:0] id_ex_pc, id_ex_inst;
     wire [99:0] id_ex_decoded;
     wire [31:0] id_ex_rdata1, id_ex_rdata2, id_ex_pc_j, id_ex_pc_b;
     wire id_ex_exc, id_ex_exc_miss;
@@ -265,13 +263,13 @@ module mips_cpu(
         .exc_o          (id_ex_exc),
         .exc_miss_o     (id_ex_exc_miss),
         .exccode_o      (id_ex_exccode),
-        .cancel_i       (commit)
+        .cancel_i       (commit||blikely_clear)
     );
     
     //////////////////// EX ////////////////////
     
     wire ex_wb_valid, wb_ex_ready, ex_done;
-    (*mark_debug="true"*) wire [31:0] ex_wb_pc, ex_wb_inst;
+    wire [31:0] ex_wb_pc, ex_wb_inst;
     wire [`I_MAX-1:0] ex_wb_ctrl;
     wire [31:0] ex_wb_result, ex_wb_eaddr, ex_wb_rdata2;
     wire [4:0] ex_wb_waddr;
@@ -288,7 +286,8 @@ module mips_cpu(
         .data_wdata     (data_wdata),
         .data_addr_ok   (data_addr_ok),
         .branch         (branch),
-        .branch_ready   (if_id_valid && ok_to_branch),
+        .branch_ready   (if_id_valid),
+        .blikely_clear  (blikely_clear),
         .target_pc      (branch_pc),
         .tlb_vaddr      (data_vaddr),
         .tlb_paddr      (data_paddr),
