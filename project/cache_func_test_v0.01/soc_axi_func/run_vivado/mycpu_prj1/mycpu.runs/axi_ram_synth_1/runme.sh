@@ -24,7 +24,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/workpath/nscscc2019_ucas_llcw/project/cache_func_test_v0.01/soc_axi_func/run_vivado/mycpu_prj1/mycpu.runs/axi_ram_synth_1'
+HD_PWD='C:/workpath/nscscc2019_ucas_llcw_final/project/cache_func_test_v0.01/soc_axi_func/run_vivado/mycpu_prj1/mycpu.runs/axi_ram_synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

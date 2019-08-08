@@ -7,6 +7,7 @@ module icache
 
 	input		  cache_req,
 	input	[6:0] cache_op,
+	input   [31:0]cache_tag,
 	output		  cache_op_ok,
 
     ////axi_control
@@ -78,17 +79,17 @@ wire    valid_0;
 wire    valid_1;
 wire    valid_2;
 wire    valid_3;
-wire 	tag_0_en;
-wire    tag_1_en;
-wire 	tag_2_en;
-wire    tag_3_en;
+(*mark_debug="true"*) wire 	tag_0_en;
+(*mark_debug="true"*) wire    tag_1_en;
+(*mark_debug="true"*) wire 	tag_2_en;
+(*mark_debug="true"*) wire    tag_3_en;
 
-wire    [31:0] inst_addr_input;
+(*mark_debug="true"*) wire    [31:0] inst_addr_input;
 wire    [31:0] tag_wdata_input;
 assign  inst_addr_input = (work_state == 4'b1111) ? op_addr_reg : ((work_state == 4'b0000) ? inst_addr : ((work_state == 4'b0110) ? (prefetch_tag) : inst_addr_reg));
-assign  tag_wdata_input = (work_state == 4'b1111) ? 21'b0 : {1'b1,inst_addr_input[31:12]};
+assign  tag_wdata_input = (work_state == 4'b1111) ? ((op_workstate == 4'd6) ? cache_tag[20:0] : 21'b0) : {1'b1,inst_addr_input[31:12]};
 
-wire    [31:0] prefetch_addr_input;
+(*mark_debug="true"*) wire    [31:0] prefetch_addr_input;
 assign  prefetch_addr_input = inst_addr_input +32'h00000020;
 
 wire [20:0]   idle_rdata_0;
@@ -176,15 +177,15 @@ wire 	[31:0] ram_wen;
 //assign ram_wen = 32'hffff;
 //assign   ram_wen = {4{}};
 
-wire	[31:0] ram_wdata;
-wire	[31:0] ram_wdata_0;
-wire	[31:0] ram_wdata_1;
-wire	[31:0] ram_wdata_2;
-wire	[31:0] ram_wdata_3;
-wire	[31:0] ram_wdata_4;
-wire	[31:0] ram_wdata_5;
-wire	[31:0] ram_wdata_6;
-wire	[31:0] ram_wdata_7;
+(*mark_debug="true"*) wire	[31:0] ram_wdata;
+(*mark_debug="true"*) wire	[31:0] ram_wdata_0;
+(*mark_debug="true"*) wire	[31:0] ram_wdata_1;
+(*mark_debug="true"*) wire	[31:0] ram_wdata_2;
+(*mark_debug="true"*) wire	[31:0] ram_wdata_3;
+(*mark_debug="true"*) wire	[31:0] ram_wdata_4;
+(*mark_debug="true"*) wire	[31:0] ram_wdata_5;
+(*mark_debug="true"*) wire	[31:0] ram_wdata_6;
+(*mark_debug="true"*) wire	[31:0] ram_wdata_7;
 
 assign ram_wdata = rdata;
 assign ram_wdata_0 = (work_state == 4'b0110) ? prefetch_buffer[0] : rdata;
@@ -350,38 +351,38 @@ icache_data way_3_data_6(clk,rst,1'b1,(ram_en_way_3_bank_6 | prefetch_ram_en_way
 icache_data way_3_data_7(clk,rst,1'b1,(ram_en_way_3_bank_7 | prefetch_ram_en_way_3_bank_7),ram_wdata_7,inst_addr_input,way_3_rdata_7);
 
 
-assign rdata_0 = ({32{hit_0}} & way_0_rdata_0) | 
-				 ({32{hit_1}} & way_1_rdata_0) |
-				 ({32{hit_2}} & way_2_rdata_0) | 
-				 ({32{hit_3}} & way_3_rdata_0) ;
-assign rdata_1 = ({32{hit_0}} & way_0_rdata_1) | 
-				 ({32{hit_1}} & way_1_rdata_1) |
-				 ({32{hit_2}} & way_2_rdata_1) | 
-				 ({32{hit_3}} & way_3_rdata_1) ;
-assign rdata_2 = ({32{hit_0}} & way_0_rdata_2) | 
-				 ({32{hit_1}} & way_1_rdata_2) |
-				 ({32{hit_2}} & way_2_rdata_2) | 
-				 ({32{hit_3}} & way_3_rdata_2) ;
-assign rdata_3 = ({32{hit_0}} & way_0_rdata_3) | 
-				 ({32{hit_1}} & way_1_rdata_3) |
-				 ({32{hit_2}} & way_2_rdata_3) | 
-				 ({32{hit_3}} & way_3_rdata_3) ;
-assign rdata_4 = ({32{hit_0}} & way_0_rdata_4) | 
-				 ({32{hit_1}} & way_1_rdata_4) |
-				 ({32{hit_2}} & way_2_rdata_4) | 
-				 ({32{hit_3}} & way_3_rdata_4) ;
-assign rdata_5 = ({32{hit_0}} & way_0_rdata_5) | 
-				 ({32{hit_1}} & way_1_rdata_5) |
-				 ({32{hit_2}} & way_2_rdata_5) | 
-				 ({32{hit_3}} & way_3_rdata_5) ;
-assign rdata_6 = ({32{hit_0}} & way_0_rdata_6) | 
-				 ({32{hit_1}} & way_1_rdata_6) |
-				 ({32{hit_2}} & way_2_rdata_6) | 
-				 ({32{hit_3}} & way_3_rdata_6) ;
-assign rdata_7 = ({32{hit_0}} & way_0_rdata_7) | 
-				 ({32{hit_1}} & way_1_rdata_7) |
-				 ({32{hit_2}} & way_2_rdata_7) | 
-				 ({32{hit_3}} & way_3_rdata_7) ;
+assign rdata_0 = ({32{succeed_0}} & way_0_rdata_0) | 
+				 ({32{succeed_1}} & way_1_rdata_0) |
+				 ({32{succeed_2}} & way_2_rdata_0) | 
+				 ({32{succeed_3}} & way_3_rdata_0) ;
+assign rdata_1 = ({32{succeed_0}} & way_0_rdata_1) | 
+				 ({32{succeed_1}} & way_1_rdata_1) |
+				 ({32{succeed_2}} & way_2_rdata_1) | 
+				 ({32{succeed_3}} & way_3_rdata_1) ;
+assign rdata_2 = ({32{succeed_0}} & way_0_rdata_2) | 
+				 ({32{succeed_1}} & way_1_rdata_2) |
+				 ({32{succeed_2}} & way_2_rdata_2) | 
+				 ({32{succeed_3}} & way_3_rdata_2) ;
+assign rdata_3 = ({32{succeed_0}} & way_0_rdata_3) | 
+				 ({32{succeed_1}} & way_1_rdata_3) |
+				 ({32{succeed_2}} & way_2_rdata_3) | 
+				 ({32{succeed_3}} & way_3_rdata_3) ;
+assign rdata_4 = ({32{succeed_0}} & way_0_rdata_4) | 
+				 ({32{succeed_1}} & way_1_rdata_4) |
+				 ({32{succeed_2}} & way_2_rdata_4) | 
+				 ({32{succeed_3}} & way_3_rdata_4) ;
+assign rdata_5 = ({32{succeed_0}} & way_0_rdata_5) | 
+				 ({32{succeed_1}} & way_1_rdata_5) |
+				 ({32{succeed_2}} & way_2_rdata_5) | 
+				 ({32{succeed_3}} & way_3_rdata_5) ;
+assign rdata_6 = ({32{succeed_0}} & way_0_rdata_6) | 
+				 ({32{succeed_1}} & way_1_rdata_6) |
+				 ({32{succeed_2}} & way_2_rdata_6) | 
+				 ({32{succeed_3}} & way_3_rdata_6) ;
+assign rdata_7 = ({32{succeed_0}} & way_0_rdata_7) | 
+				 ({32{succeed_1}} & way_1_rdata_7) |
+				 ({32{succeed_2}} & way_2_rdata_7) | 
+				 ({32{succeed_3}} & way_3_rdata_7) ;
 
 wire    [31:0] cache_rdata;
 assign cache_rdata =  	(({32{offset[4:2] == 3'd0}}) & rdata_0) |
@@ -574,9 +575,9 @@ assign tag_3_en = (replace_mode || (work_state == 4'b0110)) ? ((way_choose == 2'
 
 ////workstate
 //state
-reg [3:0] work_state;   //00: hit  /01: seek to replace and require  /11: wait for axi
-wire req_but_miss;
-assign req_but_miss = inst_req_reg && (! succeed);
+(*mark_debug="true"*) reg [3:0] work_state;   //00: hit  /01: seek to replace and require  /11: wait for axi
+(*mark_debug="true"*) wire req_but_miss;
+assign req_but_miss = inst_req_reg && (!succeed);
 
 reg prefetch;
 always @(posedge clk)
@@ -640,10 +641,10 @@ always @(posedge clk)
 		begin
 			work_state <= 4'b0001;
 		end
-		else if((work_state == 4'b0000) && index_change) 
-		begin
-			work_state <= 4'b0101;
-		end
+		// else if((work_state == 4'b0000) && index_change) 
+		// begin
+		// 	work_state <= 4'b0101;
+		// end
         else if(work_state == 4'b0001) 
         begin
             if(wait_prefetch && (prefetch_state == 4'd3))
@@ -714,20 +715,7 @@ always @(posedge clk)
 
 //index change
 wire index_change;
-reg [6:0] index_history;
-always @(posedge clk)
-	begin
-		if(rst)
-		begin
-			index_history <= 7'd0;
-		end
-		else
-		begin
-            index_history <= index;
-        end
-	end
-
-assign index_change = (index == index_history) ? 1'b0 : 1'b1;
+assign index_change = 1'b0;
 
 reg index_change_reg;
 always @(posedge clk)
@@ -783,13 +771,13 @@ assign bready   = 1'b0;
 
 // prefetch
 reg [31:0] prefetch_buffer[7:0];
-reg [31:0] prefetch_tag;
+(*mark_debug="true"*) reg [31:0] prefetch_tag;
 
 wire wait_prefetch; 
 assign wait_prefetch = (prefetch_tag[31:5] == inst_addr_reg[31:5]) && (prefetch_state != 4'd0);
 
-reg [2:0]  prefetch_target;
-reg [3:0]  prefetch_state;
+(*mark_debug="true"*) reg [2:0]  prefetch_target;
+(*mark_debug="true"*) reg [3:0]  prefetch_state;
 wire prefetch_succeed_0;
 wire prefetch_succeed_1;
 wire prefetch_succeed_2;
@@ -800,13 +788,13 @@ assign prefetch_succeed_1 = prefetch_hit_1 & prefetch_valid_1;
 assign prefetch_succeed_2 = prefetch_hit_2 & prefetch_valid_2;
 assign prefetch_succeed_3 = prefetch_hit_3 & prefetch_valid_3;
 
-wire prefetch_succeed;
+(*mark_debug="true"*) wire prefetch_succeed;
 assign prefetch_succeed = prefetch_succeed_0 | prefetch_succeed_1 | prefetch_succeed_2 | prefetch_succeed_3;
 
 wire prefetch_hit;
 assign prefetch_hit = prefetch_hit_0 || prefetch_hit_1 || prefetch_hit_2 || prefetch_hit_3;
 
-wire prefetch_work;
+(*mark_debug="true"*) wire prefetch_work;
 assign prefetch_work = inst_req_reg && succeed && !prefetch_succeed && (work_state == 4'b0000);
 
 always @(posedge clk)
@@ -1049,8 +1037,8 @@ always @(posedge clk)
 	end
 
 //reg  [3:0] 	op_workstate;
-reg  [3:0]  op_workstate;
-reg  [31:0] op_addr_reg;
+(*mark_debug="true"*) reg  [3:0]  op_workstate;
+(*mark_debug="true"*) reg  [31:0] op_addr_reg;
 wire [6:0] 	op_index;
 wire [1:0]  op_way;
 wire [4:0]  op_offset;	 
@@ -1078,7 +1066,7 @@ always @(posedge clk)
 				end
 				else if(cache_op[1])       //icache index store tag
 				begin
-					op_workstate <= 4'd1;
+					op_workstate <= 4'd6;
 				end
 				else if(cache_op[2])       //icache hit invalidate
 				begin
@@ -1109,6 +1097,10 @@ always @(posedge clk)
 		begin
 			op_workstate <= 4'd1;
 		end
+		else if(op_workstate == 4'd6)   //   icache index store tag start end
+		begin
+			op_workstate <= 4'd1;
+		end
 	end
 
 always @(posedge clk)
@@ -1129,9 +1121,9 @@ assign op_offset= op_addr_reg[4:0];
 
 assign cache_op_ok = (op_workstate == 4'd1) ? 1'b1 : 1'b0;
 
-assign op_0 = ((op_way == 2'd0) && (op_workstate == 4'd2)) || (succeed_0 && (op_workstate == 4'd5));
-assign op_1 = ((op_way == 2'd1) && (op_workstate == 4'd2)) || (succeed_1 && (op_workstate == 4'd5));
-assign op_2 = ((op_way == 2'd2) && (op_workstate == 4'd2)) || (succeed_2 && (op_workstate == 4'd5));
-assign op_3 = ((op_way == 2'd3) && (op_workstate == 4'd2)) || (succeed_3 && (op_workstate == 4'd5));
+assign op_0 = ((op_way == 2'd0) && ((op_workstate == 4'd2) || (op_workstate == 4'd6))) || (succeed_0 && (op_workstate == 4'd5));
+assign op_1 = ((op_way == 2'd1) && ((op_workstate == 4'd2) || (op_workstate == 4'd6))) || (succeed_1 && (op_workstate == 4'd5));
+assign op_2 = ((op_way == 2'd2) && ((op_workstate == 4'd2) || (op_workstate == 4'd6))) || (succeed_2 && (op_workstate == 4'd5));
+assign op_3 = ((op_way == 2'd3) && ((op_workstate == 4'd2) || (op_workstate == 4'd6))) || (succeed_3 && (op_workstate == 4'd5));
 
 endmodule

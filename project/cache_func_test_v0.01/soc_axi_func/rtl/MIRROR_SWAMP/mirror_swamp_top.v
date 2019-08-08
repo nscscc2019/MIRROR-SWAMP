@@ -1,5 +1,5 @@
-//`define USE_DATA_CACHE
-`define FORCE_INST_CACHE
+`define USE_DATA_CACHE
+//`define FORCE_INST_CACHE
 
 module mycpu_top(
     input [5:0] int,   //high active
@@ -56,6 +56,57 @@ module mycpu_top(
     output  [4 :0]   debug_wb_rf_wnum,
     output  [31:0]   debug_wb_rf_wdata
 );
+
+    //87_dbg: load failed2
+    (*mark_debug="true"*) reg [15:0] malloc_counter;
+    (*mark_debug="true"*) reg [15:0] free_counter;
+    (*mark_debug="true"*) reg [15:0] boom_addr_counter;
+    (*mark_debug="true"*) reg [15:0] boom_addr_axi_counter;
+    (*mark_debug="true"*) reg [15:0] boom_addr_range_counter;
+    (*mark_debug="true"*) reg [15:0] boom_addr_range_axi_counter;
+    (*mark_debug="true"*) reg [15:0] boom_data_wcounter;
+    (*mark_debug="true"*) reg [15:0] boom_addr_range_axi_rcounter;
+    (*mark_debug="true"*) reg [15:0] boom_addr_rcounter;
+    
+    always@(posedge aclk)
+    begin
+        malloc_counter <= !aresetn ? 16'b0 : ((cpu_inst_addr==32'h0708a250) & cpu_inst_addr_ok & cpu_inst_req) ? malloc_counter + 16'b1 : malloc_counter;
+    end
+    always@(posedge aclk)
+    begin
+        free_counter <= !aresetn ? 16'b0 : ((cpu_inst_addr==32'h0708a180) & cpu_inst_addr_ok & cpu_inst_req) ? free_counter + 16'b1 : free_counter;
+    end
+    always@(posedge aclk)
+    begin
+        boom_addr_counter <= !aresetn ? 16'b0 : ((cpu_data_addr==32'h02ffe5c0) & cpu_data_addr_ok & cpu_data_req & cpu_data_wr) ? boom_addr_counter + 16'b1 : boom_addr_counter ;
+    end
+    always@(posedge aclk)
+    begin
+        boom_addr_axi_counter <= !aresetn ? 16'b0 : ((awaddr==32'h02ffe5c0) & awvalid & awready) ? boom_addr_axi_counter + 16'b1 : boom_addr_axi_counter ;
+    end
+    always@(posedge aclk)
+    begin
+        boom_addr_range_counter <= !aresetn ? 16'b0 : (({cpu_data_addr[31:5],5'b00000}==32'h02ffe5c0) & cpu_data_addr_ok & cpu_data_req & cpu_data_wr) ? boom_addr_range_counter + 16'b1 : boom_addr_range_counter ;
+    end
+    always@(posedge aclk)
+    begin
+        boom_addr_range_axi_counter <= !aresetn ? 16'b0 : (({awaddr[31:5],5'b00000}==32'h02ffe5c0) & awvalid & awready) ? boom_addr_range_axi_counter + 16'b1 : boom_addr_range_axi_counter ;
+    end
+
+    always@(posedge aclk)
+    begin
+        boom_addr_range_axi_rcounter <= !aresetn ? 16'b0 : (({araddr[31:5],5'b00000}==32'h02ffe5c0) & arvalid & arready) ? boom_addr_range_axi_rcounter + 16'b1 : boom_addr_range_axi_rcounter ;
+    end
+    always@(posedge aclk)
+    begin
+        boom_addr_rcounter <= !aresetn ? 16'b0 : ((cpu_data_addr==32'h02ffe5c0) & cpu_data_addr_ok & cpu_data_req & (!cpu_data_wr)) ? boom_addr_rcounter + 16'b1 : boom_addr_rcounter ;
+    end
+
+    always@(posedge aclk)
+    begin
+        boom_data_wcounter <= !aresetn ? 16'b0 : ((cpu_data_wdata==32'h82ffe5c0) & cpu_data_addr_ok & cpu_data_req & cpu_data_wr) ? boom_data_wcounter + 16'b1 : boom_data_wcounter ;
+    end
+    
 
     `ifdef FORCE_INST_CACHE
     (*mark_debug="true"*) wire inst_cache=1'b1;
@@ -118,6 +169,17 @@ module mycpu_top(
     (*mark_debug="true"*) wire [6 :0] cache_op;
     (*mark_debug="true"*) wire [31:0] cache_tag;
     
+    reg cache_op_r;
+    always@(posedge aclk)
+    begin
+        if(cache_req & (cache_op!=7'b0))
+        begin
+            cache_op_r <= cache_op_r ? 1'b0 : 1'b1;
+        end
+    end
+    
+//        .cache_req(cache_req),
+//        .cache_op(cache_op),
     (*mark_debug="true"*) wire dcache_op_ok;
     (*mark_debug="true"*) wire icache_op_ok;
     (*mark_debug="true"*) wire cache_op_ok = dcache_op_ok | icache_op_ok;
@@ -569,7 +631,7 @@ module mycpu_top(
     assign storebuffer_data_addr_ok = dcache_data_addr_ok;
     assign storebuffer_data_data_ok = dcache_data_data_ok;
 
-    mini_buffer u_uncache_mini_buffer
+    no_mini_buffer u_uncache_mini_buffer
     (
         .clk(aclk),
         .resetn(aresetn),

@@ -7,6 +7,7 @@ module dcache
 
 	input		  cache_req,
 	input	[6:0] cache_op,
+	input   [31:0]cache_tag,
 	output		  cache_op_ok,
 
     ////axi_control
@@ -89,9 +90,9 @@ wire 	tag_0_en_input;
 wire    tag_1_en_input;
 assign  tag_addr_input 	= (work_state == 4'b1111) ? op_addr_reg : (((work_state == 4'b0000) || continue_sw) ? data_addr : data_addr_reg);
 assign  data_addr_input = (work_state == 4'b1111) ? op_addr_reg : ((work_state == 4'b0000) ? data_addr : data_addr_reg);
-assign  tag_wdata_input = (work_state == 4'b1111) ? 21'b0 : {1'b1,tag_addr_input[31:12]};
-// assign  tag_0_en_input  = (work_state = 4'b1111) ? tag_0_en : ((op_workstate == 4'd3) && !op_way);
-// assign  tag_1_en_input  = (work_state = 4'b1111) ? tag_1_en : ((op_workstate == 4'd3) && op_way);
+assign  tag_wdata_input = (work_state == 4'b1111) ? ((op_workstate == 4'd12) ? cache_tag[20:0] : 21'b0) : {1'b1,tag_addr_input[31:12]};
+// assign  tag_0_en_input  = (work_state = 4'b1111) ? ((op_workstate == 4'd3) && !op_way) : tag_0_en;
+// assign  tag_1_en_input  = (work_state = 4'b1111) ? ((op_workstate == 4'd3) && op_way) : tag_1_en;
 
 wire [20:0]   tag_rdata_0;
 wire [20:0]   tag_rdata_1;
@@ -269,24 +270,6 @@ wire    [31:0] way_1_rdata_5;
 wire    [31:0] way_1_rdata_6;
 wire    [31:0] way_1_rdata_7;
 
-// dcache_data way_0_data_0(clk,rst,1'b1,{4{ram_en_way_0_bank_0}},ram_wdata_way_0_data_0,data_addr_input,way_0_rdata_0);
-// dcache_data way_0_data_1(clk,rst,1'b1,{4{ram_en_way_0_bank_1}},ram_wdata_way_0_data_1,data_addr_input,way_0_rdata_1);
-// dcache_data way_0_data_2(clk,rst,1'b1,{4{ram_en_way_0_bank_2}},ram_wdata_way_0_data_2,data_addr_input,way_0_rdata_2);
-// dcache_data way_0_data_3(clk,rst,1'b1,{4{ram_en_way_0_bank_3}},ram_wdata_way_0_data_3,data_addr_input,way_0_rdata_3);
-// dcache_data way_0_data_4(clk,rst,1'b1,{4{ram_en_way_0_bank_4}},ram_wdata_way_0_data_4,data_addr_input,way_0_rdata_4);
-// dcache_data way_0_data_5(clk,rst,1'b1,{4{ram_en_way_0_bank_5}},ram_wdata_way_0_data_5,data_addr_input,way_0_rdata_5);
-// dcache_data way_0_data_6(clk,rst,1'b1,{4{ram_en_way_0_bank_6}},ram_wdata_way_0_data_6,data_addr_input,way_0_rdata_6);
-// dcache_data way_0_data_7(clk,rst,1'b1,{4{ram_en_way_0_bank_7}},ram_wdata_way_0_data_7,data_addr_input,way_0_rdata_7);
-
-// dcache_data way_1_data_0(clk,rst,1'b1,{4{ram_en_way_1_bank_0}},ram_wdata_way_1_data_0,data_addr_input,way_1_rdata_0);
-// dcache_data way_1_data_1(clk,rst,1'b1,{4{ram_en_way_1_bank_1}},ram_wdata_way_1_data_1,data_addr_input,way_1_rdata_1);
-// dcache_data way_1_data_2(clk,rst,1'b1,{4{ram_en_way_1_bank_2}},ram_wdata_way_1_data_2,data_addr_input,way_1_rdata_2);
-// dcache_data way_1_data_3(clk,rst,1'b1,{4{ram_en_way_1_bank_3}},ram_wdata_way_1_data_3,data_addr_input,way_1_rdata_3);
-// dcache_data way_1_data_4(clk,rst,1'b1,{4{ram_en_way_1_bank_4}},ram_wdata_way_1_data_4,data_addr_input,way_1_rdata_4);
-// dcache_data way_1_data_5(clk,rst,1'b1,{4{ram_en_way_1_bank_5}},ram_wdata_way_1_data_5,data_addr_input,way_1_rdata_5);
-// dcache_data way_1_data_6(clk,rst,1'b1,{4{ram_en_way_1_bank_6}},ram_wdata_way_1_data_6,data_addr_input,way_1_rdata_6);
-// dcache_data way_1_data_7(clk,rst,1'b1,{4{ram_en_way_1_bank_7}},ram_wdata_way_1_data_7,data_addr_input,way_1_rdata_7);
-
 dcache_data way_0_data_0(clk,rst,1'b1,({4{ram_wen_way_0_bank_0_input}} & data_wstrb_input),ram_wdata,data_addr_input,way_0_rdata_0);
 dcache_data way_0_data_1(clk,rst,1'b1,({4{ram_wen_way_0_bank_1_input}} & data_wstrb_input),ram_wdata,data_addr_input,way_0_rdata_1);
 dcache_data way_0_data_2(clk,rst,1'b1,({4{ram_wen_way_0_bank_2_input}} & data_wstrb_input),ram_wdata,data_addr_input,way_0_rdata_2);
@@ -305,14 +288,14 @@ dcache_data way_1_data_5(clk,rst,1'b1,({4{ram_wen_way_1_bank_5_input}} & data_ws
 dcache_data way_1_data_6(clk,rst,1'b1,({4{ram_wen_way_1_bank_6_input}} & data_wstrb_input),ram_wdata,data_addr_input,way_1_rdata_6);
 dcache_data way_1_data_7(clk,rst,1'b1,({4{ram_wen_way_1_bank_7_input}} & data_wstrb_input),ram_wdata,data_addr_input,way_1_rdata_7);
 
-assign rdata_0 = hit_0 ? way_0_rdata_0 : way_1_rdata_0;
-assign rdata_1 = hit_0 ? way_0_rdata_1 : way_1_rdata_1;
-assign rdata_2 = hit_0 ? way_0_rdata_2 : way_1_rdata_2;
-assign rdata_3 = hit_0 ? way_0_rdata_3 : way_1_rdata_3;
-assign rdata_4 = hit_0 ? way_0_rdata_4 : way_1_rdata_4;
-assign rdata_5 = hit_0 ? way_0_rdata_5 : way_1_rdata_5;
-assign rdata_6 = hit_0 ? way_0_rdata_6 : way_1_rdata_6;
-assign rdata_7 = hit_0 ? way_0_rdata_7 : way_1_rdata_7;
+assign rdata_0 = succeed_0 ? way_0_rdata_0 : way_1_rdata_0;
+assign rdata_1 = succeed_0 ? way_0_rdata_1 : way_1_rdata_1;
+assign rdata_2 = succeed_0 ? way_0_rdata_2 : way_1_rdata_2;
+assign rdata_3 = succeed_0 ? way_0_rdata_3 : way_1_rdata_3;
+assign rdata_4 = succeed_0 ? way_0_rdata_4 : way_1_rdata_4;
+assign rdata_5 = succeed_0 ? way_0_rdata_5 : way_1_rdata_5;
+assign rdata_6 = succeed_0 ? way_0_rdata_6 : way_1_rdata_6;
+assign rdata_7 = succeed_0 ? way_0_rdata_7 : way_1_rdata_7;
 
 wire    [31:0] cache_rdata;
 assign cache_rdata =  	(({32{offset[4:2] == 3'd0}}) & rdata_0) |
@@ -379,7 +362,7 @@ always @(posedge clk)
 		begin
 			data_wr_reg <= data_wr;
 		end
-		else if((work_state == 4'b1001) && rvalid && rlast && (rid == 4'd1))
+		else if((work_state == 4'd6) || ((work_state == 4'd7) && data_data_ok))
 		begin
 			data_wr_reg <= 1'b0;
 		end
@@ -573,7 +556,7 @@ assign tag_1_en = replace_mode_tag ? (way_choose ? 1'b1 : 1'b0) : 1'b0;
 ////workstate
 //state
 (*mark_debug="true"*) reg [3:0] work_state;   //00: hit  /01: seek to replace and require  /11: wait for axi
- (*mark_debug="true"*) reg [3: 0] victim_workstate;
+(*mark_debug="true"*) reg [3: 0] victim_workstate;
 (*mark_debug="true"*) reg [26:0] victim_addr;
 wire req_but_miss;
 (*mark_debug="true"*) wire write_back;
@@ -675,10 +658,6 @@ always @(posedge clk)
         end
 	end
 
-//index change
-wire index_change;
-assign index_change = 1'b0;
-
 //sram control
 assign data_addr_ok = data_req & ((work_state == 4'b0000) || (continue_sw)) & (addr_data_equal ? data_data_ok : 1'b1);   ////////////////
 assign data_data_ok = (data_req_reg && succeed && ((work_state == 4'b0000) || (work_state == 4'b0111))) || (work_state == 4'b1000);// || ((work_state == 3'b010) ? 1'b1 : 1'b0);   // state 10 after rlast, 
@@ -690,7 +669,7 @@ wire   wait_victim_buffer;
 assign wait_victim_buffer = (data_addr_reg[31:5] == victim_addr) && (victim_workstate != 4'd0);
 
 assign arid		= 4'd1;
-assign araddr   = data_addr_reg;
+assign araddr   = {data_addr_reg[31:2],2'b0};
 assign arlen    = 8'd7;
 assign arsize   = 3'd2;
 assign arburst  = 2'b10;
@@ -781,8 +760,8 @@ always @(posedge clk)
 	end
 
 // victim_buffer
-(*mark_debug="true"*) reg [31:0] victim_buffer [7:0];
-(*mark_debug="true"*) reg [31:0] victim_buffer_reg [7:0];
+reg [31:0] victim_buffer [7:0];
+reg [31:0] victim_buffer_reg [7:0];
 
 always @(posedge clk)
 	begin
@@ -1034,7 +1013,7 @@ always @(posedge clk)
 				end
 				else if(cache_op[4])       //dcache index store tag
 				begin
-					op_workstate <= 4'd1;
+					op_workstate <= 4'd12;
 				end
 				else if(cache_op[5])       //dcache hit invalidate
 				begin
@@ -1048,11 +1027,11 @@ always @(posedge clk)
 		end
 		else if(op_workstate == 4'd2)   //    dcache index writeback invalidate start:
 		begin
-			if((!dirty_way_0[op_index] && !op_way) || (!dirty_way_1[op_index] && op_way))
+			/*if((!dirty_way_0[op_index] && !op_way) || (!dirty_way_1[op_index] && op_way))
 			begin
 				op_workstate <= 4'd6;
 			end
-			else if(victim_workstate == 4'd0)
+			else */if(victim_workstate == 4'd0)
 			begin
 				op_workstate <= 4'd3;
 			end
@@ -1073,7 +1052,7 @@ always @(posedge clk)
 		end
 		else if(op_workstate == 4'd5)
 		begin
-			if(bvalid && (bid == 4'd0))
+			if(bvalid && (bid == 4'd2))
 			begin
 				op_workstate <= 4'd6;
 			end
@@ -1111,6 +1090,10 @@ always @(posedge clk)
 			begin
 				op_workstate <= 4'd1;
 			end
+		end
+		else if(op_workstate == 4'd12)   
+		begin
+			op_workstate <= 4'd1;
 		end
 	end
 
@@ -1175,7 +1158,7 @@ assign op_write_back =  	(({32{op_bank_write == 3'd0}}) & op_rdata_0) |
 							(({32{op_bank_write == 3'd4}}) & op_rdata_4) |
 							(({32{op_bank_write == 3'd5}}) & op_rdata_5) |
 							(({32{op_bank_write == 3'd6}}) & op_rdata_6) |
-							(({32{op_bank_write == 3'd7}}) & op_rdata_7);
+							(({32{op_bank_write == 3'd7}}) & op_rdata_7) ;
 
 assign op_way 	= op_addr_reg[12];
 assign op_index = op_addr_reg[11:5];
@@ -1185,13 +1168,13 @@ assign cache_op_ok = (op_workstate == 4'd1) ? 1'b1 : 1'b0;
 
 wire  [19:0] op_read_tag = op_way ? tag_rdata_1[19:0] : tag_rdata_0[19:0];
 
-assign op_0 = !op_way_choose && (op_workstate == 4'd6);
-assign op_1 =  op_way_choose && (op_workstate == 4'd6);
+assign op_0 = !op_way_choose && ((op_workstate == 4'd6) || (op_workstate == 4'd12));
+assign op_1 =  op_way_choose && ((op_workstate == 4'd6) || (op_workstate == 4'd12));
 
 
 
 
-assign awid     = 4'd0;
+assign awid     = (work_state == 4'b1111) ? 4'd2 : 4'd0;
 assign awlen    = 8'd7;
 assign awburst  = 2'b01;
 assign awsize   = 3'd2;
@@ -1204,7 +1187,7 @@ assign awvalid  = (victim_workstate == 4'd2) || (op_workstate == 4'd3);
 
 assign wdata    = (work_state == 4'b1111) ? op_write_back : cache_write_back;
 assign wvalid   = (victim_workstate == 4'd3) || (op_workstate == 4'd4);
-assign wid      = 4'd0;
+assign wid      = (work_state == 4'b1111) ? 4'd2 : 4'd0;
 assign wlast    = (target_bank_write == 3'd7) || (op_bank_write == 3'd7);
 assign wstrb    = 4'b1111;
 

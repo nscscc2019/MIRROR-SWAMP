@@ -690,7 +690,7 @@ wire   wait_victim_buffer;
 assign wait_victim_buffer = (data_addr_reg[31:5] == victim_addr) && (victim_workstate != 4'd0);
 
 assign arid		= 4'd1;
-assign araddr   = data_addr_reg;
+assign araddr   = {data_addr_reg[31:2],2'b0};
 assign arlen    = 8'd7;
 assign arsize   = 3'd2;
 assign arburst  = 2'b10;

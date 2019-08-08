@@ -195,7 +195,7 @@ module cp0regs(
     end
     
     // Count (9, 0)
-    reg [31:0] count;
+    (*mark_debug="true"*) reg [31:0] count;
     reg tick;
     
     wire count_write = mtc0 && addr == `CP0_COUNT;
