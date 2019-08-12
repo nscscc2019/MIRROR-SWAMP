@@ -107,7 +107,20 @@ module soc_up_top(
     output        SPI_CLK,
     output        SPI_CS,
     inout         SPI_MISO,
-    inout         SPI_MOSI
+    inout         SPI_MOSI,
+
+    //------LCD------
+    output        lcd_rst,
+    output        lcd_cs,
+    output        lcd_rs,
+    output        lcd_wr,
+    output        lcd_rd,
+    inout  [15:0] lcd_data,
+    output        lcd_bl_ctr
+    //inout         ct_int,
+    //inout         ct_sda,
+    //output        ct_scl,
+    //output        ct_rstn
 );
 wire        aclk;
 wire        aresetn;
@@ -556,7 +569,7 @@ assign int_n_i = ~int_out;
 
 // cpu
 mycpu_top cpu_mid(
-  .int      (int_n_i[5:0]),  //5 -> 6 bit
+  .int      (~int_n_i[5:0]),  //5 -> 6 bit
   .aclk        (aclk),
   .aresetn         (aresetn      ),
   //  .nmi              (1'b1),
@@ -960,7 +973,20 @@ confreg CONFREG(
 .switch            (switch      ),
 .btn_key_col       (btn_key_col ),
 .btn_key_row       (btn_key_row ),
-.btn_step          (btn_step    )
+.btn_step          (btn_step    ),
+
+//lcd
+.lcd_rst           (lcd_rst     ),
+.lcd_cs            (lcd_cs      ),
+.lcd_rs            (lcd_rs      ),
+.lcd_wr            (lcd_wr      ),
+.lcd_rd            (lcd_rd      ),
+.lcd_data          (lcd_data    ),
+.lcd_bl_ctr        (lcd_bl_ctr  )
+// .ct_int            (ct_int      ),
+// .ct_sda            (ct_sda      ),
+// .ct_scl            (ct_scl      ),
+// .ct_rstn           (ct_rstn     )
 );
 
 //MAC top

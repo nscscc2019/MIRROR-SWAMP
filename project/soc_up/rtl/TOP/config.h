@@ -36,7 +36,7 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 `define Lconfbusreg   64
 `define Lconfbusaddr  16
 
-`define ORDER_REG_ADDR          16'h1160
+//`define ORDER_REG_ADDR          16'h1160
 
 `define Lawcmd 4
 `define Lawdirqid 4

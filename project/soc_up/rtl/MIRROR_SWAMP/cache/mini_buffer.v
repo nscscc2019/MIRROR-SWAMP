@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-module mini_buffer
+module uncache_mini_buffer
 (
     input          clk,
     input          resetn,
@@ -38,19 +38,18 @@ module mini_buffer
 wire rst;
 assign rst=!resetn; 
 
-reg [4:0]   s_index   [0:31];
-reg [31:0]  s_addr    [0:31];
-reg [31:0]  s_data    [0:31];
-reg [3:0]   s_wstrb   [0:31];
-reg [1:0]   s_size   [0:31];
+reg [3:0]   s_index   [0:15];
+reg [31:0]  s_addr    [0:15];
+reg [31:0]  s_data    [0:15];
+reg [3:0]   s_wstrb   [0:15];
 
-reg [4:0]   A;
-reg [4:0]   B;
+reg [3:0]   A;
+reg [3:0]   B;
 
-wire [4:0] symbol_A;
-wire [4:0] symbol_B;
-assign symbol_A = A + 5'd1;
-assign symbol_B = B + 5'd1;
+wire [3:0] symbol_A;
+wire [3:0] symbol_B;
+assign symbol_A = A + 4'd1;
+assign symbol_B = B + 4'd1;
 
 wire full;
 wire empty;
@@ -189,7 +188,6 @@ assign buffer_wr_r      = 1'b1;
 assign buffer_req_r     = ((buffer_workstate == 4'd1) || buffer_data_ok_r) && !empty && !catch_reg;
 assign buffer_wstrb_r   = s_wstrb[A];
 assign buffer_wdata_r   = s_data[A];
-wire [1:0] buffer_size_r = s_size[A];
 assign buffer_addr_ok_r = buffer_req_r && dcache_data_addr_ok; 
 assign buffer_data_ok_r = (buffer_workstate == 4'd2) && (axi_workstate != 4'd2) && dcache_data_data_ok;
 
@@ -227,7 +225,7 @@ assign axi_wr       = cpu_data_wr;
 
 assign dcache_data_req      = (axi_work) ? axi_req          : buffer_req_r;
 assign dcache_data_wr       = (axi_work) ? axi_wr           : buffer_wr_r;
-assign dcache_data_size     = (axi_work) ? axi_size         : buffer_size_r;
+assign dcache_data_size     = (axi_work) ? axi_size         : 3'd2;
 assign dcache_data_addr     = (axi_work) ? axi_addr         : buffer_addr_r;
 assign dcache_data_wdata    = (axi_work) ? axi_wdata        : buffer_wdata_r;
 assign dcache_data_wstrb    = (axi_work) ? cpu_data_wstrb   : buffer_wstrb_r;
@@ -240,38 +238,22 @@ always @(posedge clk)
 	begin
 		if(rst)
 		begin
-			s_index[0] <= 5'd0;
-            s_index[1] <= 5'd1;
-            s_index[2] <= 5'd2;
-            s_index[3] <= 5'd3;
-            s_index[4] <= 5'd4;
-            s_index[5] <= 5'd5; 
-            s_index[6] <= 5'd6;
-            s_index[7] <= 5'd7;
-            s_index[8] <= 5'd8;
-            s_index[9] <= 5'd9;
-            s_index[10] <= 5'd10;
-            s_index[11] <= 5'd11;
-            s_index[12] <= 5'd12;
-            s_index[13] <= 5'd13; 
-            s_index[14] <= 5'd14;
-            s_index[15] <= 5'd15;
-            s_index[16] <= 5'd16;
-            s_index[17] <= 5'd17;
-            s_index[18] <= 5'd18;
-            s_index[19] <= 5'd19;
-            s_index[20] <= 5'd20;
-            s_index[21] <= 5'd21; 
-            s_index[22] <= 5'd22;
-            s_index[23] <= 5'd23;
-            s_index[24] <= 5'd24;
-            s_index[25] <= 5'd25;
-            s_index[26] <= 5'd26;
-            s_index[27] <= 5'd27;
-            s_index[28] <= 5'd28;
-            s_index[29] <= 5'd29; 
-            s_index[30] <= 5'd30;
-            s_index[31] <= 5'd31;
+			s_index[0] <= 4'd0;
+            s_index[1] <= 4'd1;
+            s_index[2] <= 4'd2;
+            s_index[3] <= 4'd3;
+            s_index[4] <= 4'd4;
+            s_index[5] <= 4'd5; 
+            s_index[6] <= 4'd6;
+            s_index[7] <= 4'd7;
+            s_index[8] <= 4'd8;
+            s_index[9] <= 4'd9;
+            s_index[10] <= 4'd10;
+            s_index[11] <= 4'd11;
+            s_index[12] <= 4'd12;
+            s_index[13] <= 4'd13; 
+            s_index[14] <= 4'd14;
+            s_index[15] <= 4'd15;
 		end
 	end
 
@@ -279,11 +261,11 @@ always @(posedge clk)
 	begin
 		if(rst)
 		begin
-			A <= 5'd0;
+			A <= 4'd0;
 		end
         else if(/*(buffer_workstate == 4'd2) &&*/ (buffer_addr_ok_r && !empty) || catch)
         begin
-            A <= A + 5'd1;
+            A <= A + 4'd1;
         end
 	end
 
@@ -291,11 +273,11 @@ always @(posedge clk)
 	begin
 		if(rst)
 		begin
-			B <= 5'd0;
+			B <= 4'd0;
 		end
         else if(buffer_push)
         begin
-            B <= B + 5'd1;
+            B <= B + 4'd1;
         end
 	end
 
@@ -320,14 +302,6 @@ always @(posedge clk)
         if(buffer_push)
         begin
             s_data[B] <= cpu_data_wdata;
-        end
-	end
-	
-always @(posedge clk)
-	begin
-        if(buffer_push)
-        begin
-            s_size[B] <= cpu_data_size;
         end
 	end
 
@@ -360,6 +334,107 @@ always @(posedge clk)
             counter_full <= counter_full + 32'd1;
         end
 	end
+
+endmodule
+
+module cache_mini_buffer
+(
+    input          clk,
+    input          resetn,
+
+    input          cpu_data_req    ,
+    input          cpu_data_wr     ,
+    input   [1 :0] cpu_data_size   ,
+    input   [31:0] cpu_data_addr   ,
+    input   [31:0] cpu_data_wdata  ,
+	input   [3 :0] cpu_data_wstrb  ,
+    output  [31:0] cpu_data_rdata  ,
+    output         cpu_data_addr_ok,
+    output         cpu_data_data_ok,
+
+    output          dcache_data_req    ,
+    output          dcache_data_wr     ,
+    output   [1 :0] dcache_data_size   ,
+    output   [31:0] dcache_data_addr   ,
+    output   [31:0] dcache_data_wdata  ,
+	output   [3 :0] dcache_data_wstrb  ,
+    input    [31:0] dcache_data_rdata  ,
+    input           dcache_data_addr_ok,
+    input           dcache_data_data_ok
+);
+
+wire rst;
+assign rst = !resetn;
+
+assign dcache_data_req      = valid ? (cpu_data_req && dcache_data_data_ok) : cpu_data_req;
+assign dcache_data_wr       = cpu_data_wr;
+assign dcache_data_wstrb    = cpu_data_wstrb;
+assign dcache_data_size     = cpu_data_size;
+assign dcache_data_wdata    = cpu_data_wdata;
+assign dcache_data_addr     = cpu_data_addr;
+
+
+assign cpu_data_rdata       = dcache_data_rdata;
+assign cpu_data_addr_ok     = dcache_data_addr_ok;
+assign cpu_data_data_ok     = (valid_change_reg) ? 1'b1 : (dcache_data_data_ok & !valid);
+
+reg         valid;
+reg         valid_history;
+reg[31:0]   tag;
+reg[31:0]   content;
+
+wire valid_change;
+reg valid_change_reg;
+assign valid_change = dcache_data_addr_ok && cpu_data_wr;
+always @(posedge clk)
+	begin
+		if(rst)
+		begin
+			valid_change_reg <= 1'b0;
+		end
+		else
+		begin
+		    valid_change_reg <= valid_change;
+		end
+	end
+
+always @(posedge clk)
+	begin
+		if(rst)
+		begin
+			valid <= 1'b0;
+		end
+		else if(dcache_data_addr_ok && cpu_data_wr) 
+		begin
+			valid <= 1'b1;
+		end
+        else if(dcache_data_data_ok) 
+		begin
+			valid <= 1'b0;
+		end
+	end
+
+always @(posedge clk)
+	begin
+		if(rst)
+		begin
+			valid_history <= 1'b0;
+		end
+		else
+		begin
+		    valid_history <= valid;
+		end
+	end
+
+//   assign         dcache_data_req    = cpu_data_req;
+//   assign         dcache_data_wr     = cpu_data_wr ;
+//   assign         dcache_data_size   = cpu_data_size;
+//   assign         dcache_data_addr   = cpu_data_addr;
+//   assign         dcache_data_wdata  = cpu_data_wdata;
+//   assign         dcache_data_wstrb  = cpu_data_wstrb;
+//   assign         cpu_data_rdata     = dcache_data_rdata;
+//   assign         cpu_data_addr_ok   = dcache_data_addr_ok;
+//   assign         cpu_data_data_ok   = dcache_data_data_ok;
 
 endmodule
 

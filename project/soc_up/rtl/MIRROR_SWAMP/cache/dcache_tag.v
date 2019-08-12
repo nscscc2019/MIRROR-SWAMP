@@ -89,7 +89,6 @@ end
 always @(posedge clk)
 begin
     if (!work) tag_ram[reset_counter] <= 21'b0;
-    // else if (op)  tag_ram[op_addr] <= op_wdata;
     else if (wen || op) tag_ram[addr[11:5]] <= wdata;
 end
 
@@ -97,9 +96,7 @@ wire [20:0] tag_out = tag_ram[addr[11:5]];
 always @(posedge clk) tag_reg <= tag_out;
 assign rdata = tag_reg;
 
-reg hit_reg;
-always @(posedge clk) hit_reg <= tag_out[19:0] == addr[31:12];
-assign hit = hit_reg;
+assign hit = (tag_reg[19:0] == addr_reg[31:12]) ? 1'b1 : 1'b0;
 
 // `endif
 

@@ -113,7 +113,7 @@ module fetch_stage(
     assign inst_req         = valid_i && ok_to_req && !if_req_exc && req_state;
     assign inst_addr[31:12] = (qstate == 2'd0 && kseg01) ? {3'd0, pc_i[28:12]} : tlbc_paddr_hi;
     assign inst_addr[11:0]  = qstate == 2'd0 ? pc_i[11:0] : pc_save[11:0];
-    assign inst_cache       = qstate == 2'd0 ? (kseg0 && config_k0[0]) : tlbc_cattr[0];
+    assign inst_cache       = (qstate == 2'd0 && kseg01) ? (kseg0 && config_k0[0]) : tlbc_cattr[0];
     
     assign ready_o      = ready_i && (inst_addr_ok || if_req_exc);
     

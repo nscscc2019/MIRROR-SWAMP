@@ -39,7 +39,10 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 `define SWITCH_ADDR    16'hf020   //32'hbfd0_f020 
 `define BTN_KEY_ADDR   16'hf024   //32'hbfd0_f024
 `define BTN_STEP_ADDR  16'hf028   //32'hbfd0_f028
-`define TIMER_ADDR     16'he000   //32'hbfd0_e000 
+`define TIMER_ADDR     16'he000   //32'hbfd0_e000
+`define LCD_CTRL_ADDR  16'hd000   //32'hbfd0_d000
+`define TOUCH_SDA_ADDR 16'hd004   //32'hbfd0_d004
+`define TOUCH_SCL_ADDR 16'hd008   //32'hbfd0_d008
 module confreg(
     aclk,
     aresetn,
@@ -102,7 +105,19 @@ module confreg(
     switch,
     btn_key_col,
     btn_key_row,
-    btn_step
+    btn_step,
+
+    lcd_rst,
+    lcd_cs,
+    lcd_rs,
+    lcd_wr,
+    lcd_rd,
+    lcd_data,
+    lcd_bl_ctr
+    // ct_int,
+    // ct_sda,
+    // ct_scl,
+    // ct_rstn
 );
     input           aclk;
     input           aresetn;
@@ -167,6 +182,29 @@ module confreg(
     input      [3 :0] btn_key_row;
     input      [1 :0] btn_step;
 
+    // tft_lcd
+    output            lcd_rst;
+    output            lcd_cs;
+    output            lcd_rs;
+    output            lcd_wr;
+    output            lcd_rd;
+    output     [15:0] lcd_data;
+    output            lcd_bl_ctr;
+    
+    // inout             ct_int;
+    // inout             ct_sda;
+    // output reg        ct_scl;
+    // output            ct_rstn;
+    // wire              sda_i;
+    // reg               sda_o;
+    // reg               sda_o_en;
+    // IOBUF sda_io(.IO(ct_sda),.I(sda_o),.T(sda_o_en),.O(sda_i));
+    
+    // wire              int_o_en, int_o;
+    // IOBUF int_io(.IO(ct_int),.I(int_o),.T(int_o_en),.O());
+    // assign            int_o_en = 1'b1;
+    // assign            int_o = 1'b1;
+
 //
 reg  [31:0] led_data;
 reg  [31:0] led_rg0_data;
@@ -176,6 +214,8 @@ wire [31:0] switch_data;
 wire [31:0] btn_key_data;
 wire [31:0] btn_step_data;
 reg  [31:0] timer;
+reg  [31:0] tft_lcd_ctrl;
+wire [31:0] lcd_confreg_o;
 
 reg [31:0] cr00,cr01,cr02,cr03,cr04,cr05,cr06,cr07;
 reg busy,write,R_or_W;
@@ -281,7 +321,10 @@ wire [31:0] rdata_d = buf_addr[15:2] == 14'd0 ? cr00 :
                       buf_addr[15:0] == `SWITCH_ADDR    ? switch_data    :
                       buf_addr[15:0] == `BTN_KEY_ADDR   ? btn_key_data   :
                       buf_addr[15:0] == `BTN_STEP_ADDR  ? btn_step_data  :
-                      buf_addr[15:0] == `TIMER_ADDR     ? timer          : 32'd0;
+                      buf_addr[15:0] == `TIMER_ADDR     ? timer          : 
+                      buf_addr[15:0] == `LCD_CTRL_ADDR  ? lcd_confreg_o  :
+                      //buf_addr[15:0] == `TOUCH_SDA_ADDR ? {31'b0, sda_i} :
+                      32'd0;
 
 always@(posedge aclk)
     if(~aresetn) begin
@@ -356,7 +399,7 @@ always @(posedge aclk)
 begin
     if(!aresetn)
     begin
-        led_data <= 32'h0;
+        led_data <= 32'hffffffff; // CHANGE LED STATUS
     end
     else if(write_led)
     begin
@@ -607,7 +650,7 @@ always @(posedge aclk)
 begin
     if(!aresetn)
     begin
-        num_data <= 32'h0;
+        num_data <= 32'h23333333;
     end
     else if(write_num)
     begin
@@ -692,4 +735,70 @@ begin
     end
 end
 //----------------------------{digital number}end------------------------//
+//----------------------------{tft lcd ctrl}begin------------------------//
+wire write_tft_lcd_ctrl = w_enter & (buf_addr[15:0]==`LCD_CTRL_ADDR);
+always @(posedge aclk)
+begin
+    if(!aresetn)
+    begin
+        tft_lcd_ctrl <= 32'b0;
+    end
+    else if(write_tft_lcd_ctrl)
+    begin
+        tft_lcd_ctrl <= s_wdata;
+    end
+    else
+        tft_lcd_ctrl <= {1'b0, tft_lcd_ctrl[30:0]};
+end
+lcd mylcd(
+    .clk(aclk),
+    .resetn(aresetn),
+    .lcd_confreg_i(tft_lcd_ctrl),
+    .lcd_confreg_o(lcd_confreg_o),
+    .lcd_hw_rst(lcd_rst),
+    .lcd_hw_cs(lcd_cs),
+    .lcd_hw_rs(lcd_rs),
+    .lcd_hw_wr(lcd_wr),
+    .lcd_hw_rd(lcd_rd),
+    .lcd_hw_data(lcd_data),
+    .lcd_hw_bl_ctr(lcd_bl_ctr)
+);
+//----------------------------{tft lcd ctrl}end--------------------------//
+//----------------------------{touch ctrl}begin--------------------------//
+// reg [23:0] rst_count;
+// always @(posedge aclk)
+//     if (~aresetn)
+//         rst_count <= 24'b0;
+//     else if (rst_count != 24'hffffff)
+//         rst_count <= rst_count + 1;
+// assign ct_rstn = &rst_count;
+
+// wire write_touch_scl = w_enter & (buf_addr[15:0]==`TOUCH_SCL_ADDR);
+// always @(posedge aclk)
+// begin
+//     if (!aresetn)
+//     begin
+//         ct_scl <= 1'b1;
+//     end
+//     else if(write_touch_scl)
+//     begin
+//         ct_scl <= s_wdata[0];
+//     end
+// end
+
+// wire write_touch_sda = w_enter & (buf_addr[15:0]==`TOUCH_SDA_ADDR);
+// always @(posedge aclk)
+// begin
+//     if (!aresetn)
+//     begin
+//         sda_o_en <= 1'b1;
+//         sda_o <= 1'b1;
+//     end
+//     else if (write_touch_sda)
+//     begin
+//         sda_o_en <= s_wdata[1];
+//         sda_o <= s_wdata[0];
+//     end
+// end
+//----------------------------{touch ctrl}end-------------------------//
 endmodule

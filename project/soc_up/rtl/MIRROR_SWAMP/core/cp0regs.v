@@ -27,6 +27,7 @@ module cp0regs(
     input               commit_exc, // also valid when commit_eret is valid
     input   [4 :0]      commit_code,
     input               commit_bd,
+    input   [1 :0]      commit_ce,
     input   [31:0]      commit_epc,
     input   [31:0]      commit_bvaddr,
     input               commit_eret,
@@ -195,7 +196,7 @@ module cp0regs(
     end
     
     // Count (9, 0)
-    (*mark_debug="true"*) reg [31:0] count;
+    reg [31:0] count;
     reg tick;
     
     wire count_write = mtc0 && addr == `CP0_COUNT;
@@ -313,6 +314,7 @@ module cp0regs(
         else cause_ti <= timer_int;
         // CE
         if (!resetn) cause_ce <= 2'd0;
+        else if (exception_commit) cause_ce <= commit_ce;
         // IV
         if (!resetn) cause_iv <= 1'b0;
         else if (cause_write) cause_iv <= mtc0_data[`CAUSE_IV];

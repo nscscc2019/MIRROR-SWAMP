@@ -9,46 +9,46 @@ module mycpu_top(
 
     //axi
     //ar
-    (*mark_debug="true"*) output [3:0] arid,
-    (*mark_debug="true"*) output [31:0] araddr,
-    (*mark_debug="true"*) output [3:0] arlen,
-    (*mark_debug="true"*) output [2:0] arsize,
-    (*mark_debug="true"*) output [1:0] arburst,
-    (*mark_debug="true"*) output [1:0] arlock,
-    (*mark_debug="true"*) output [3:0] arcache,
-    (*mark_debug="true"*) output [2:0] arprot,
-    (*mark_debug="true"*) output arvalid,
-    (*mark_debug="true"*) input arready,
+    output [3:0] arid,
+    output [31:0] araddr,
+    output [3:0] arlen,
+    output [2:0] arsize,
+    output [1:0] arburst,
+    output [1:0] arlock,
+    output [3:0] arcache,
+    output [2:0] arprot,
+    output arvalid,
+    input arready,
     //r              
-    (*mark_debug="true"*) input [3:0] rid,
-    (*mark_debug="true"*) input [31:0] rdata,
-    (*mark_debug="true"*) input [1:0] rresp,
-    (*mark_debug="true"*) input rlast,
-    (*mark_debug="true"*) input rvalid,
-    (*mark_debug="true"*) output rready,
+    input [3:0] rid,
+    input [31:0] rdata,
+    input [1:0] rresp,
+    input rlast,
+    input rvalid,
+    output rready,
     //aw           
-    (*mark_debug="true"*) output [3:0] awid,
-    (*mark_debug="true"*) output [31:0] awaddr,
-    (*mark_debug="true"*) output [3:0] awlen,
-    (*mark_debug="true"*) output [2:0] awsize,
-    (*mark_debug="true"*) output [1:0] awburst,
-    (*mark_debug="true"*) output [1:0] awlock,
-    (*mark_debug="true"*) output [3:0] awcache,
-    (*mark_debug="true"*) output [2:0] awprot,
-    (*mark_debug="true"*) output awvalid,
-    (*mark_debug="true"*) input awready,
+    output [3:0] awid,
+    output [31:0] awaddr,
+    output [3:0] awlen,
+    output [2:0] awsize,
+    output [1:0] awburst,
+    output [1:0] awlock,
+    output [3:0] awcache,
+    output [2:0] awprot,
+    output awvalid,
+    input awready,
     //w          
-    (*mark_debug="true"*) output [3:0] wid,
-    (*mark_debug="true"*) output [31:0] wdata,
-    (*mark_debug="true"*) output [3:0] wstrb,
-    (*mark_debug="true"*) output wlast,
-    (*mark_debug="true"*) output wvalid,
-    (*mark_debug="true"*) input wready,
+    output [3:0] wid,
+    output [31:0] wdata,
+    output [3:0] wstrb,
+    output wlast,
+    output wvalid,
+    input wready,
     //b              
-    (*mark_debug="true"*) input [3:0] bid,
-    (*mark_debug="true"*) input [1:0] bresp,
-    (*mark_debug="true"*) input bvalid,
-    (*mark_debug="true"*) output bready,
+    input [3:0] bid,
+    input [1:0] bresp,
+    input bvalid,
+    output bready,
 
     //debug interface
     output  [31:0]   debug_wb_pc,
@@ -57,117 +57,116 @@ module mycpu_top(
     output  [31:0]   debug_wb_rf_wdata
 );
 
-    //87_dbg: load failed2
-    (*mark_debug="true"*) reg [15:0] malloc_counter;
-    (*mark_debug="true"*) reg [15:0] free_counter;
-    (*mark_debug="true"*) reg [15:0] boom_addr_counter;
-    (*mark_debug="true"*) reg [15:0] boom_addr_axi_counter;
-    (*mark_debug="true"*) reg [15:0] boom_addr_range_counter;
-    (*mark_debug="true"*) reg [15:0] boom_addr_range_axi_counter;
-    (*mark_debug="true"*) reg [15:0] boom_data_wcounter;
-    (*mark_debug="true"*) reg [15:0] boom_addr_range_axi_rcounter;
-    (*mark_debug="true"*) reg [15:0] boom_addr_rcounter;
+    // //87_dbg: load failed2
+//     reg [15:0] malloc_counter;
+//     reg [15:0] free_counter;
+    //  reg [15:0] boom_addr_counter;
+    //  reg [15:0] boom_addr_axi_counter;
+    //  reg [15:0] boom_addr_range_counter;
+    //  reg [15:0] boom_addr_range_axi_counter;
+//     reg [15:0] boom_data_wcounter;
+    //  reg [15:0] boom_addr_range_axi_rcounter;
+    //  reg [15:0] boom_addr_rcounter;
     
-    always@(posedge aclk)
-    begin
-        malloc_counter <= !aresetn ? 16'b0 : ((cpu_inst_addr==32'h0708a250) & cpu_inst_addr_ok & cpu_inst_req) ? malloc_counter + 16'b1 : malloc_counter;
-    end
-    always@(posedge aclk)
-    begin
-        free_counter <= !aresetn ? 16'b0 : ((cpu_inst_addr==32'h0708a180) & cpu_inst_addr_ok & cpu_inst_req) ? free_counter + 16'b1 : free_counter;
-    end
-    always@(posedge aclk)
-    begin
-        boom_addr_counter <= !aresetn ? 16'b0 : ((cpu_data_addr==32'h02ffe5c0) & cpu_data_addr_ok & cpu_data_req & cpu_data_wr) ? boom_addr_counter + 16'b1 : boom_addr_counter ;
-    end
-    always@(posedge aclk)
-    begin
-        boom_addr_axi_counter <= !aresetn ? 16'b0 : ((awaddr==32'h02ffe5c0) & awvalid & awready) ? boom_addr_axi_counter + 16'b1 : boom_addr_axi_counter ;
-    end
-    always@(posedge aclk)
-    begin
-        boom_addr_range_counter <= !aresetn ? 16'b0 : (({cpu_data_addr[31:5],5'b00000}==32'h02ffe5c0) & cpu_data_addr_ok & cpu_data_req & cpu_data_wr) ? boom_addr_range_counter + 16'b1 : boom_addr_range_counter ;
-    end
-    always@(posedge aclk)
-    begin
-        boom_addr_range_axi_counter <= !aresetn ? 16'b0 : (({awaddr[31:5],5'b00000}==32'h02ffe5c0) & awvalid & awready) ? boom_addr_range_axi_counter + 16'b1 : boom_addr_range_axi_counter ;
-    end
+//     always@(posedge aclk)
+//     begin
+//         malloc_counter <= !aresetn ? 16'b0 : ((cpu_inst_addr==32'h0708a250) & cpu_inst_addr_ok & cpu_inst_req) ? malloc_counter + 16'b1 : malloc_counter;
+//     end
+//     always@(posedge aclk)
+//     begin
+//         free_counter <= !aresetn ? 16'b0 : ((cpu_inst_addr==32'h0708a180) & cpu_inst_addr_ok & cpu_inst_req) ? free_counter + 16'b1 : free_counter;
+//     end
+    //  always@(posedge aclk)
+    //  begin
+    //      boom_addr_counter <= !aresetn ? 16'b0 : ((cpu_data_addr==32'h00000200) & cpu_data_addr_ok & cpu_data_req & cpu_data_wr) ? boom_addr_counter + 16'b1 : boom_addr_counter ;
+    //  end
+    //  always@(posedge aclk)
+    //  begin
+    //      boom_addr_axi_counter <= !aresetn ? 16'b0 : ((awaddr==32'h00000200) & awvalid & awready) ? boom_addr_axi_counter + 16'b1 : boom_addr_axi_counter ;
+    //  end
+    //  always@(posedge aclk)
+    //  begin
+    //      boom_addr_range_counter <= !aresetn ? 16'b0 : (({cpu_data_addr[31:5],5'b00000}==32'h00000200) & cpu_data_addr_ok & cpu_data_req & cpu_data_wr) ? boom_addr_range_counter + 16'b1 : boom_addr_range_counter ;
+    //  end
+    //  always@(posedge aclk)
+    //  begin
+    //      boom_addr_range_axi_counter <= !aresetn ? 16'b0 : (({awaddr[31:5],5'b00000}==32'h00000200) & awvalid & awready) ? boom_addr_range_axi_counter + 16'b1 : boom_addr_range_axi_counter ;
+    //  end
 
-    always@(posedge aclk)
-    begin
-        boom_addr_range_axi_rcounter <= !aresetn ? 16'b0 : (({araddr[31:5],5'b00000}==32'h02ffe5c0) & arvalid & arready) ? boom_addr_range_axi_rcounter + 16'b1 : boom_addr_range_axi_rcounter ;
-    end
-    always@(posedge aclk)
-    begin
-        boom_addr_rcounter <= !aresetn ? 16'b0 : ((cpu_data_addr==32'h02ffe5c0) & cpu_data_addr_ok & cpu_data_req & (!cpu_data_wr)) ? boom_addr_rcounter + 16'b1 : boom_addr_rcounter ;
-    end
+    //  always@(posedge aclk)
+    //  begin
+    //      boom_addr_range_axi_rcounter <= !aresetn ? 16'b0 : (({araddr[31:5],5'b00000}==32'h00000200) & arvalid & arready) ? boom_addr_range_axi_rcounter + 16'b1 : boom_addr_range_axi_rcounter ;
+    //  end
+    //  always@(posedge aclk)
+    //  begin
+    //      boom_addr_rcounter <= !aresetn ? 16'b0 : ((cpu_data_addr==32'h00000200) & cpu_data_addr_ok & cpu_data_req & (!cpu_data_wr)) ? boom_addr_rcounter + 16'b1 : boom_addr_rcounter ;
+    //  end
 
-    always@(posedge aclk)
-    begin
-        boom_data_wcounter <= !aresetn ? 16'b0 : ((cpu_data_wdata==32'h82ffe5c0) & cpu_data_addr_ok & cpu_data_req & cpu_data_wr) ? boom_data_wcounter + 16'b1 : boom_data_wcounter ;
-    end
+//     always@(posedge aclk)
+//     begin
+//         boom_data_wcounter <= !aresetn ? 16'b0 : ((cpu_data_wdata==32'h805b0000) & cpu_data_addr_ok & cpu_data_req & cpu_data_wr) ? boom_data_wcounter + 16'b1 : boom_data_wcounter ;
+//     end
     
 
     `ifdef FORCE_INST_CACHE
-    (*mark_debug="true"*) wire inst_cache=1'b1;
+    wire inst_cache=1'b1;
     `else
-    (*mark_debug="true"*) wire inst_cache= cpu_inst_req ? cpu_inst_cache : 1'b0; // TMPFIX: & inst_req is used to deal with those time when inst_cache = x 
+    wire inst_cache= cpu_inst_req ? cpu_inst_cache : 1'b0; // TMPFIX: & inst_req is used to deal with those time when inst_cache = x 
     // wire inst_cache=cpu_inst_cache; 
     `endif
     `ifdef USE_DATA_CACHE
-    (*mark_debug="true"*) wire data_cache;
+    wire data_cache;
     `else
     wire data_cache=1'b0;
     `endif
     
-    (*mark_debug="true"*) reg [15:0] cache_op_counter;
-    always@(posedge aclk)
-    begin
-        cache_op_counter <= !aresetn ? 16'b0 : (cache_req & cache_op_ok) ? (cache_op_counter+16'b1) : cache_op_counter;
-    end
+    // reg [15:0] cache_op_counter;
+    // always@(posedge aclk)
+    // begin
+    //     cache_op_counter <= !aresetn ? 16'b0 : (cache_req & cache_op_ok) ? (cache_op_counter+16'b1) : cache_op_counter;
+    // end
     
-    // for os debug
-    (*mark_debug="true"*) reg [31:0] cache_w_counter;
-    (*mark_debug="true"*) reg [31:0] cache_r_counter;
-    (*mark_debug="true"*) reg [31:0] uncache_w_counter;
-    (*mark_debug="true"*) reg [31:0] uncache_r_counter;
-    (*mark_debug="true"*) wire [31:0] total_w_counter = cache_w_counter + uncache_w_counter;
-    (*mark_debug="true"*) wire [31:0] total_r_counter = cache_r_counter + uncache_r_counter;
+    // // for os debug
+    // reg [31:0] cache_w_counter;
+    // reg [31:0] cache_r_counter;
+    // reg [31:0] uncache_w_counter;
+    // reg [31:0] uncache_r_counter;
+    // wire [31:0] total_w_counter = cache_w_counter + uncache_w_counter;
+    // wire [31:0] total_r_counter = cache_r_counter + uncache_r_counter;
     
-    always@(posedge aclk)
-    begin
-        cache_w_counter <= !aresetn ? 32'b0 : (cpu_data_req & data_cache & cpu_data_cache_addr_ok & (cpu_data_wr)) ? (cache_w_counter+32'b1) : cache_w_counter;
-        cache_r_counter <= !aresetn ? 32'b0 : (cpu_data_req & data_cache & cpu_data_cache_addr_ok & (!cpu_data_wr)) ? (cache_r_counter+32'b1) : cache_r_counter;
-        uncache_w_counter <= !aresetn ? 32'b0 : (cpu_data_req & (!data_cache) & cpu_data_uncache_addr_ok & (cpu_data_wr)) ? (uncache_w_counter+32'b1) : uncache_w_counter;
-        uncache_r_counter <= !aresetn ? 32'b0 : (cpu_data_req & (!data_cache) & cpu_data_uncache_addr_ok & (!cpu_data_wr)) ? (uncache_r_counter+32'b1) : uncache_r_counter;
-    end
+    // always@(posedge aclk)
+    // begin
+    //     cache_w_counter <= !aresetn ? 32'b0 : (cpu_data_req & data_cache & cpu_data_cache_addr_ok & (cpu_data_wr)) ? (cache_w_counter+32'b1) : cache_w_counter;
+    //     cache_r_counter <= !aresetn ? 32'b0 : (cpu_data_req & data_cache & cpu_data_cache_addr_ok & (!cpu_data_wr)) ? (cache_r_counter+32'b1) : cache_r_counter;
+    //     uncache_w_counter <= !aresetn ? 32'b0 : (cpu_data_req & (!data_cache) & cpu_data_uncache_addr_ok & (cpu_data_wr)) ? (uncache_w_counter+32'b1) : uncache_w_counter;
+    //     uncache_r_counter <= !aresetn ? 32'b0 : (cpu_data_req & (!data_cache) & cpu_data_uncache_addr_ok & (!cpu_data_wr)) ? (uncache_r_counter+32'b1) : uncache_r_counter;
+    // end
     
-    (*mark_debug="true"*) wire dbg_clk = aclk;
-    (*mark_debug="true"*) wire cpu_inst_req;
-    (*mark_debug="true"*) wire [31:0] cpu_inst_addr;
-    (*mark_debug="true"*) wire [31:0] cpu_inst_rdata;
+    wire cpu_inst_req;
+    wire [31:0] cpu_inst_addr;
+    wire [31:0] cpu_inst_rdata;
     wire [31:0] cpu_inst_cache_rdata;
     wire [31:0] cpu_inst_uncache_rdata;
     wire [31:0] cpu_inst_wdata;
-    (*mark_debug="true"*) wire cpu_inst_addr_ok;
-    (*mark_debug="true"*) wire cpu_inst_data_ok;
-    (*mark_debug="true"*) wire cpu_data_req;
-    (*mark_debug="true"*) wire cpu_data_wr;
-    (*mark_debug="true"*) wire [3:0] cpu_data_wstrb;
-    (*mark_debug="true"*) wire [31:0] cpu_data_addr;
-    (*mark_debug="true"*) wire [2 :0] cpu_data_size;
-    (*mark_debug="true"*) wire [31:0] cpu_data_wdata;
-    (*mark_debug="true"*) wire [31:0] cpu_data_rdata;
-    (*mark_debug="true"*) wire [31:0] cpu_data_cache_rdata;
-    (*mark_debug="true"*) wire [31:0] cpu_data_cache_wdata;
-    (*mark_debug="true"*) wire [31:0] cpu_data_uncache_rdata;
-    (*mark_debug="true"*) wire [31:0] cpu_data_uncache_wdata;
-    (*mark_debug="true"*) wire cpu_data_addr_ok;
-    (*mark_debug="true"*) wire cpu_data_data_ok;
+    wire cpu_inst_addr_ok;
+    wire cpu_inst_data_ok;
+    wire cpu_data_req;
+    wire cpu_data_wr;
+    wire [3:0] cpu_data_wstrb;
+    wire [31:0] cpu_data_addr;
+    wire [2 :0] cpu_data_size;
+    wire [31:0] cpu_data_wdata;
+    wire [31:0] cpu_data_rdata;
+    wire [31:0] cpu_data_cache_rdata;
+    wire [31:0] cpu_data_cache_wdata;
+    wire [31:0] cpu_data_uncache_rdata;
+    wire [31:0] cpu_data_uncache_wdata;
+    wire cpu_data_addr_ok;
+    wire cpu_data_data_ok;
 
-    (*mark_debug="true"*) wire cache_req;
-    (*mark_debug="true"*) wire [6 :0] cache_op;
-    (*mark_debug="true"*) wire [31:0] cache_tag;
+    wire cache_req;
+    wire [6 :0] cache_op;
+    wire [31:0] cache_tag;
     
     reg cache_op_r;
     always@(posedge aclk)
@@ -180,21 +179,21 @@ module mycpu_top(
     
 //        .cache_req(cache_req),
 //        .cache_op(cache_op),
-    (*mark_debug="true"*) wire dcache_op_ok;
-    (*mark_debug="true"*) wire icache_op_ok;
-    (*mark_debug="true"*) wire cache_op_ok = dcache_op_ok | icache_op_ok;
+    wire dcache_op_ok;
+    wire icache_op_ok;
+    wire cache_op_ok = dcache_op_ok | icache_op_ok;
 
     wire [31:0] araddr_before, awaddr_before;
     wire [3:0] arlen_before;
 
-    wire confreg_sideway = (cpu_data_addr[31:16]==16'hbfaf)
-                          |(cpu_data_addr[31:16]==16'h1faf);
+    // wire confreg_sideway = (cpu_data_addr[31:16]==16'hbfaf)
+    //                       |(cpu_data_addr[31:16]==16'h1faf);
 
 //    assign inst_cache = `USE_CACHE;
 //    assign data_cache = confreg_sideway?1'b0:`USE_CACHE; 
 
-    (*mark_debug="true"*) wire inst_req_cango ;
-    (*mark_debug="true"*) wire data_req_cango ;
+    wire inst_req_cango ;
+    wire data_req_cango ;
     
     wire cpu_inst_cache;
 
@@ -216,7 +215,7 @@ module mycpu_top(
     wire        dcache_arready;
     //r
     wire [3 :0] dcache_rid    ;
-    (*mark_debug="true"*) wire [31:0] dcache_rdata  ;
+    wire [31:0] dcache_rdata  ;
     wire [1 :0] dcache_rresp  ;
     wire        dcache_rlast  ;
     wire        dcache_rvalid ;
@@ -234,7 +233,7 @@ module mycpu_top(
     wire         dcache_awready;
     //w
     wire  [3 :0]dcache_wid    ;
-    (*mark_debug="true"*) wire  [31:0]dcache_wdata  ;
+    wire  [31:0]dcache_wdata  ;
     wire  [3 :0]dcache_wstrb  ;
     wire         dcache_wlast  ;
     wire         dcache_wvalid ;
@@ -344,7 +343,7 @@ module mycpu_top(
     wire  [3 :0]uncached_data_arid   ;
     wire  [31:0]uncached_data_araddr ;
     wire  [7 :0]uncached_data_arlen  ;
-    (*mark_debug="true"*) wire  [2 :0]uncached_data_arsize ;
+    wire  [2 :0]uncached_data_arsize ;
     wire  [1 :0]uncached_data_arburst;
     wire  [1 :0]uncached_data_arlock ;
     wire  [3 :0]uncached_data_arcache;
@@ -403,8 +402,8 @@ module mycpu_top(
 
     wire        duncache_data_req;
     wire        duncache_data_wr;
-    (*mark_debug="true"*) wire [1 :0] duncache_data_size;
-    (*mark_debug="true"*) wire [31:0] duncache_data_addr;
+    wire [1 :0] duncache_data_size;
+    wire [31:0] duncache_data_addr;
     wire [31:0] duncache_data_wdata;
     wire [3 :0] duncache_data_wstrb;
     wire [31:0] duncache_data_rdata;
@@ -443,12 +442,12 @@ module mycpu_top(
 
     // reg [31:0] cpu_dcache_buffer;
     // reg have_cache_data_to_transfer;
-    (*mark_debug="true"*)reg [3:0]data_src_queue;
-    (*mark_debug="true"*)reg [1:0]addr_pointer;
-    (*mark_debug="true"*)reg [1:0]data_pointer;
-    (*mark_debug="true"*)reg [3:0]inst_src_queue;
-    (*mark_debug="true"*)reg [1:0]iaddr_pointer;
-    (*mark_debug="true"*)reg [1:0]idata_pointer;
+    reg [3:0]data_src_queue;
+    reg [1:0]addr_pointer;
+    reg [1:0]data_pointer;
+    reg [3:0]inst_src_queue;
+    reg [1:0]iaddr_pointer;
+    reg [1:0]idata_pointer;
 
     // wire buffer_data_cango = have_cache_data_to_transfer & data_src_queue[data_pointer] == 1'b1;
 
@@ -560,78 +559,59 @@ module mycpu_top(
         `endif
     );
 
-    // store_buffer u_store_buffer
-    // (
-    //     .clk(aclk),
-    //     .resetn(aresetn),
-    //     .cpu_data_req(cpu_data_req & data_cache & data_req_cango)    ,
-    //     .cpu_data_wr(cpu_data_wr)     ,
-    //     .cpu_data_size(cpu_data_size)   ,
-    //     .cpu_data_addr(cpu_data_addr)   ,
-    //     .cpu_data_wdata(cpu_data_wdata)  ,
-    //     .cpu_data_wstrb(cpu_data_wstrb)  ,
-    //     .cpu_data_rdata(cpu_data_cache_rdata)  ,
-    //     .cpu_data_addr_ok(cpu_data_cache_addr_ok),
-    //     .cpu_data_data_ok(cpu_data_cache_data_ok),
-    //     .dcache_data_req(storebuffer_data_req),
-    //     .dcache_data_wr(storebuffer_data_wr),
-    //     .dcache_data_size(storebuffer_data_size),
-    //     .dcache_data_addr(storebuffer_data_addr),
-    //     .dcache_data_wdata(storebuffer_data_wdata),
-    //     .dcache_data_wstrb(storebuffer_data_wstrb),
-    //     .dcache_data_rdata(storebuffer_data_rdata),
-    //     .dcache_data_addr_ok(storebuffer_data_addr_ok),
-    //     .dcache_data_data_ok(storebuffer_data_data_ok)
-    // );
-    // store_buffer is no longer used
+     // store_buffer is disabled
+     store_buffer u_store_buffer
+     (
+         .clk(aclk),
+         .resetn(aresetn),
+         .cpu_data_req(cpu_data_req & data_cache & data_req_cango)    ,
+         .cpu_data_wr(cpu_data_wr)     ,
+         .cpu_data_size(cpu_data_size)   ,
+         .cpu_data_addr(cpu_data_addr)   ,
+         .cpu_data_wdata(cpu_data_wdata)  ,
+         .cpu_data_wstrb(cpu_data_wstrb)  ,
+         .cpu_data_rdata(cpu_data_cache_rdata)  ,
+         .cpu_data_addr_ok(cpu_data_cache_addr_ok),
+         .cpu_data_data_ok(cpu_data_cache_data_ok),
+         .dcache_data_req(storebuffer_data_req),
+         .dcache_data_wr(storebuffer_data_wr),
+         .dcache_data_size(storebuffer_data_size),
+         .dcache_data_addr(storebuffer_data_addr),
+         .dcache_data_wdata(storebuffer_data_wdata),
+         .dcache_data_wstrb(storebuffer_data_wstrb),
+         .dcache_data_rdata(storebuffer_data_rdata),
+         .dcache_data_addr_ok(storebuffer_data_addr_ok),
+         .dcache_data_data_ok(storebuffer_data_data_ok)
+     ); 
 
-    assign         storebuffer_data_req    = cpu_data_req & data_cache & data_req_cango;
-    assign         storebuffer_data_wr     = cpu_data_wr ;
-    assign         storebuffer_data_size   = cpu_data_size;
-    assign         storebuffer_data_addr   = cpu_data_addr;
-    assign         storebuffer_data_wdata  = cpu_data_wdata;
-    assign         storebuffer_data_wstrb  = cpu_data_wstrb;
-    assign         cpu_data_cache_rdata     = storebuffer_data_rdata;
-    assign         cpu_data_cache_addr_ok   = storebuffer_data_addr_ok;
-    assign         cpu_data_cache_data_ok   = storebuffer_data_data_ok;
 
-    // no_mini_buffer u_cache_mini_buffer
-    // (
-    //     .clk(aclk),
-    //     .resetn(aresetn),
-    //     .cpu_data_req(storebuffer_data_req)    ,
-    //     .cpu_data_wr(storebuffer_data_wr)     ,
-    //     .cpu_data_size(storebuffer_data_size)   ,
-    //     .cpu_data_addr(storebuffer_data_addr)   ,
-    //     .cpu_data_wdata(storebuffer_data_wdata)  ,
-    //     .cpu_data_wstrb(storebuffer_data_wstrb)  ,
-    //     .cpu_data_rdata(storebuffer_data_rdata)  ,
-    //     .cpu_data_addr_ok(storebuffer_data_addr_ok),
-    //     .cpu_data_data_ok(storebuffer_data_data_ok),
-    //     .dcache_data_req(dcache_data_req)    ,
-    //     .dcache_data_wr(dcache_data_wr)     ,
-    //     .dcache_data_size(dcache_data_size)   ,
-    //     .dcache_data_addr(dcache_data_addr)   ,
-    //     .dcache_data_wdata(dcache_data_wdata)  ,
-    //     .dcache_data_wstrb(dcache_data_wstrb)  ,
-    //     .dcache_data_rdata(dcache_data_rdata)  ,
-    //     .dcache_data_addr_ok(dcache_data_addr_ok),
-    //     .dcache_data_data_ok(dcache_data_data_ok)
-    // );
-    // cache_store_buffer is no longer used
+     cache_mini_buffer u_cache_mini_buffer
+     (
+         .clk(aclk),
+         .resetn(aresetn),
+         .cpu_data_req(storebuffer_data_req)    ,
+         .cpu_data_wr(storebuffer_data_wr)     ,
+         .cpu_data_size(storebuffer_data_size)   ,
+         .cpu_data_addr(storebuffer_data_addr)   ,
+         .cpu_data_wdata(storebuffer_data_wdata)  ,
+         .cpu_data_wstrb(storebuffer_data_wstrb)  ,
+         .cpu_data_rdata(storebuffer_data_rdata)  ,
+         .cpu_data_addr_ok(storebuffer_data_addr_ok),
+         .cpu_data_data_ok(storebuffer_data_data_ok),
+         .dcache_data_req(dcache_data_req)    ,
+         .dcache_data_wr(dcache_data_wr)     ,
+         .dcache_data_size(dcache_data_size)   ,
+         .dcache_data_addr(dcache_data_addr)   ,
+         .dcache_data_wdata(dcache_data_wdata)  ,
+         .dcache_data_wstrb(dcache_data_wstrb)  ,
+         .dcache_data_rdata(dcache_data_rdata)  ,
+         .dcache_data_addr_ok(dcache_data_addr_ok),
+         .dcache_data_data_ok(dcache_data_data_ok)
+     );
+     
+    // cache_mini_buffer is enabled
 
-    assign dcache_data_req = storebuffer_data_req;
-    assign dcache_data_wr = storebuffer_data_wr;
-    assign dcache_data_size = storebuffer_data_size;
-    assign dcache_data_addr = storebuffer_data_addr;
-    assign dcache_data_wdata = storebuffer_data_wdata;
-    assign dcache_data_wstrb = storebuffer_data_wstrb;
-
-    assign storebuffer_data_rdata = dcache_data_rdata;
-    assign storebuffer_data_addr_ok = dcache_data_addr_ok;
-    assign storebuffer_data_data_ok = dcache_data_data_ok;
-
-    no_mini_buffer u_uncache_mini_buffer
+    uncache_mini_buffer u_uncache_mini_buffer
     (
         .clk(aclk),
         .resetn(aresetn),

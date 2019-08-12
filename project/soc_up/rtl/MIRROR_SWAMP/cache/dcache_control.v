@@ -81,7 +81,7 @@ wire    valid_0;
 wire    valid_1;
 wire 	tag_0_en;
 wire    tag_1_en;
-(*mark_debug="true"*) wire    [31:0] ram_wdata;
+wire    [31:0] ram_wdata;
 
 wire    [31:0] data_addr_input;
 wire    [31:0] tag_addr_input;
@@ -555,11 +555,11 @@ assign tag_1_en = replace_mode_tag ? (way_choose ? 1'b1 : 1'b0) : 1'b0;
 
 ////workstate
 //state
-(*mark_debug="true"*) reg [3:0] work_state;   //00: hit  /01: seek to replace and require  /11: wait for axi
-(*mark_debug="true"*) reg [3: 0] victim_workstate;
-(*mark_debug="true"*) reg [26:0] victim_addr;
+reg [3:0] work_state;   //00: hit  /01: seek to replace and require  /11: wait for axi
+reg [3: 0] victim_workstate;
+reg [26:0] victim_addr;
 wire req_but_miss;
-(*mark_debug="true"*) wire write_back;
+wire write_back;
 
 assign req_but_miss = data_req_reg && (!succeed);
 assign write_back 	=((way_choose == 1'b0) && valid_0) || ((way_choose == 1'b1) && valid_1);
@@ -811,7 +811,7 @@ always @(posedge clk)
         end
 	end
 
-(*mark_debug="true"*) reg[20:0] tag_rdata_reg;
+reg[20:0] tag_rdata_reg;
 always @(posedge clk)
 	begin
 		if(rst)
@@ -983,11 +983,11 @@ always @(posedge clk)
 	end
 	
 //cache operation
-(*mark_debug="true"*) reg  [3:0] 	op_workstate;
-(*mark_debug="true"*) reg  [31:0] op_addr_reg;
+reg  [3:0] 	op_workstate;
+reg  [31:0] op_addr_reg;
 wire [6:0] 	op_index;
 wire 		op_way;
-wire [4:0]  op_offset;	 
+wire [4:0]  op_offset;
 
 always @(posedge clk)
 	begin
@@ -1009,7 +1009,7 @@ always @(posedge clk)
 			begin
 				if(cache_op[3])       //dcache index writeback invalidate
 				begin
-					op_workstate <= 4'd2;
+					op_workstate <= 4'd13;
 				end
 				else if(cache_op[4])       //dcache index store tag
 				begin
@@ -1025,15 +1025,19 @@ always @(posedge clk)
 				end
 			end
 		end
-		else if(op_workstate == 4'd2)   //    dcache index writeback invalidate start:
+		else if(op_workstate == 4'd13) //    dcache index writeback invalidate start:
 		begin
-			/*if((!dirty_way_0[op_index] && !op_way) || (!dirty_way_1[op_index] && op_way))
-			begin
-				op_workstate <= 4'd6;
-			end
-			else */if(victim_workstate == 4'd0)
+			op_workstate <= 4'd2;
+		end
+		else if(op_workstate == 4'd2)   
+		begin
+			if((victim_workstate == 4'd0) && ((valid_0 && !op_way) || (valid_1 && op_way)))
 			begin
 				op_workstate <= 4'd3;
+			end
+			else if((!valid_0 && !op_way) || (!valid_1 && op_way))
+			begin
+				op_workstate <= 4'd1;
 			end
 		end
 		else if(op_workstate == 4'd3)
@@ -1166,7 +1170,7 @@ assign op_offset= op_addr_reg[4:0];
 
 assign cache_op_ok = (op_workstate == 4'd1) ? 1'b1 : 1'b0;
 
-wire  [19:0] op_read_tag = op_way ? tag_rdata_1[19:0] : tag_rdata_0[19:0];
+wire  [19:0] op_read_tag = op_way_choose ? tag_rdata_1[19:0] : tag_rdata_0[19:0];
 
 assign op_0 = !op_way_choose && ((op_workstate == 4'd6) || (op_workstate == 4'd12));
 assign op_1 =  op_way_choose && ((op_workstate == 4'd6) || (op_workstate == 4'd12));

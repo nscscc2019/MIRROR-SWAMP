@@ -34,14 +34,15 @@ module mips_cpu(
     output  [31:0]      debug_wb_pc,
     output  [3 :0]      debug_wb_rf_wen,
     output  [4 :0]      debug_wb_rf_wnum,
-    (*mark_debug="true"*) output  [31:0]      debug_wb_rf_wdata
+    output  [31:0]      debug_wb_rf_wdata
 );
     
     wire int_sig;
     
-    (*mark_debug="true"*) wire commit, commit_miss, commit_int, commit_bd, commit_eret;
-    (*mark_debug="true"*) wire [4:0] commit_code;
-    (*mark_debug="true"*) wire [31:0] commit_epc, commit_bvaddr;
+    wire commit, commit_miss, commit_int, commit_bd, commit_eret;
+    wire [4:0] commit_code;
+    wire [1:0] commit_ce;
+    wire [31:0] commit_epc, commit_bvaddr;
     
     wire cp0_w;
     wire [31:0] cp0_wdata, cp0_rdata;
@@ -49,7 +50,7 @@ module mips_cpu(
     
     wire [31:0] cp0_index, cp0_random, cp0_entrylo0, cp0_entrylo1, cp0_entryhi;
     wire [11:0] cp0_mask;
-    (*mark_debug="true"*) wire [31:0] cp0_status, cp0_cause, cp0_epc;
+    wire [31:0] cp0_status, cp0_cause, cp0_epc;
     wire [2:0] config_k0;
     
     wire tlbr, tlbwi, tlbwr, tlbp;
@@ -76,6 +77,7 @@ module mips_cpu(
         .commit_exc     (commit),
         .commit_code    (commit_code),
         .commit_bd      (commit_bd),
+        .commit_ce      (commit_ce),
         .commit_epc     (commit_epc),
         .commit_bvaddr  (commit_bvaddr),
         .commit_eret    (commit_eret),
@@ -134,8 +136,8 @@ module mips_cpu(
     wire if_valid;
     wire if_ready;
     wire [31:0] if_pc;
-    (*mark_debug="true"*) wire if_id_valid, id_if_ready;
-    (*mark_debug="true"*) wire [31:0] if_id_pc;
+    wire if_id_valid, id_if_ready;
+    wire [31:0] if_id_pc;
     wire if_id_cancelled, if_id_exc, if_id_exc_miss;
     wire [4:0] if_id_exccode;
     
@@ -222,11 +224,11 @@ module mips_cpu(
     wire [31:0] ex_fwd_data, wb_fwd_data;
     wire ex_fwd_ok, wb_fwd_ok;
     
-    (*mark_debug="true"*) wire id_ex_valid, ex_id_ready, id_done;
-    (*mark_debug="true"*) wire [31:0] id_ex_pc, id_ex_inst;
-    wire [99:0] id_ex_decoded;
+    wire id_ex_valid, ex_id_ready, id_done;
+    wire [31:0] id_ex_pc, id_ex_inst;
+    wire [`LDECBITS] id_ex_decoded;
     wire [31:0] id_ex_rdata1, id_ex_rdata2, id_ex_pc_j, id_ex_pc_b;
-    wire id_ex_exc, id_ex_exc_miss;
+    wire id_ex_exc, id_ex_exc_miss, id_ex_exc_int;
     wire [4:0] id_ex_exccode;
     
     decode_stage decode(
@@ -244,6 +246,7 @@ module mips_cpu(
         .wb_fwd_addr    (wb_fwd_addr),
         .wb_fwd_data    (wb_fwd_data),
         .wb_fwd_ok      (wb_fwd_ok),
+        .int_sig        (int_sig),
         .done_o         (id_done),
         .valid_i        (if_id_valid),
         .pc_i           (if_id_pc),
@@ -262,14 +265,15 @@ module mips_cpu(
         .exccode_i      (if_id_exccode),
         .exc_o          (id_ex_exc),
         .exc_miss_o     (id_ex_exc_miss),
+        .exc_int_o      (id_ex_exc_int),
         .exccode_o      (id_ex_exccode),
         .cancel_i       (commit||blikely_clear)
     );
     
     //////////////////// EX ////////////////////
     
-    (*mark_debug="true"*) wire ex_wb_valid, wb_ex_ready, ex_done;
-    (*mark_debug="true"*) wire [31:0] ex_wb_pc, ex_wb_inst;
+    wire ex_wb_valid, wb_ex_ready, ex_done;
+    wire [31:0] ex_wb_pc, ex_wb_inst;
     wire [`I_MAX-1:0] ex_wb_ctrl;
     wire [31:0] ex_wb_result, ex_wb_eaddr, ex_wb_rdata2;
     wire [4:0] ex_wb_waddr;
@@ -300,7 +304,6 @@ module mips_cpu(
         .cache_op_ok    (cache_op_ok),
         .status         (cp0_status),
         .config_k0      (config_k0),
-        .int_sig        (int_sig),
         .fwd_addr       (ex_fwd_addr),
         .fwd_data       (ex_fwd_data),
         .fwd_ok         (ex_fwd_ok),
@@ -332,12 +335,14 @@ module mips_cpu(
         .waddr_o        (ex_wb_waddr),
         .exc_i          (id_ex_exc),
         .exc_miss_i     (id_ex_exc_miss),
+        .exc_int_i      (id_ex_exc_int),
         .exccode_i      (id_ex_exccode),
         .commit         (commit),
         .commit_miss    (commit_miss),
         .commit_int     (commit_int),
         .commit_code    (commit_code),
         .commit_bd      (commit_bd),
+        .commit_ce      (commit_ce),
         .commit_epc     (commit_epc),
         .commit_bvaddr  (commit_bvaddr),
         .commit_eret    (commit_eret)

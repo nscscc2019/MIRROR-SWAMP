@@ -79,17 +79,17 @@ wire    valid_0;
 wire    valid_1;
 wire    valid_2;
 wire    valid_3;
-(*mark_debug="true"*) wire 	tag_0_en;
-(*mark_debug="true"*) wire    tag_1_en;
-(*mark_debug="true"*) wire 	tag_2_en;
-(*mark_debug="true"*) wire    tag_3_en;
+wire 	tag_0_en;
+wire    tag_1_en;
+wire 	tag_2_en;
+wire    tag_3_en;
 
-(*mark_debug="true"*) wire    [31:0] inst_addr_input;
+wire    [31:0] inst_addr_input;
 wire    [31:0] tag_wdata_input;
 assign  inst_addr_input = (work_state == 4'b1111) ? op_addr_reg : ((work_state == 4'b0000) ? inst_addr : ((work_state == 4'b0110) ? (prefetch_tag) : inst_addr_reg));
 assign  tag_wdata_input = (work_state == 4'b1111) ? ((op_workstate == 4'd6) ? cache_tag[20:0] : 21'b0) : {1'b1,inst_addr_input[31:12]};
 
-(*mark_debug="true"*) wire    [31:0] prefetch_addr_input;
+wire    [31:0] prefetch_addr_input;
 assign  prefetch_addr_input = inst_addr_input +32'h00000020;
 
 wire [20:0]   idle_rdata_0;
@@ -177,15 +177,15 @@ wire 	[31:0] ram_wen;
 //assign ram_wen = 32'hffff;
 //assign   ram_wen = {4{}};
 
-(*mark_debug="true"*) wire	[31:0] ram_wdata;
-(*mark_debug="true"*) wire	[31:0] ram_wdata_0;
-(*mark_debug="true"*) wire	[31:0] ram_wdata_1;
-(*mark_debug="true"*) wire	[31:0] ram_wdata_2;
-(*mark_debug="true"*) wire	[31:0] ram_wdata_3;
-(*mark_debug="true"*) wire	[31:0] ram_wdata_4;
-(*mark_debug="true"*) wire	[31:0] ram_wdata_5;
-(*mark_debug="true"*) wire	[31:0] ram_wdata_6;
-(*mark_debug="true"*) wire	[31:0] ram_wdata_7;
+wire	[31:0] ram_wdata;
+wire	[31:0] ram_wdata_0;
+wire	[31:0] ram_wdata_1;
+wire	[31:0] ram_wdata_2;
+wire	[31:0] ram_wdata_3;
+wire	[31:0] ram_wdata_4;
+wire	[31:0] ram_wdata_5;
+wire	[31:0] ram_wdata_6;
+wire	[31:0] ram_wdata_7;
 
 assign ram_wdata = rdata;
 assign ram_wdata_0 = (work_state == 4'b0110) ? prefetch_buffer[0] : rdata;
@@ -575,8 +575,8 @@ assign tag_3_en = (replace_mode || (work_state == 4'b0110)) ? ((way_choose == 2'
 
 ////workstate
 //state
-(*mark_debug="true"*) reg [3:0] work_state;   //00: hit  /01: seek to replace and require  /11: wait for axi
-(*mark_debug="true"*) wire req_but_miss;
+reg [3:0] work_state;   //00: hit  /01: seek to replace and require  /11: wait for axi
+wire req_but_miss;
 assign req_but_miss = inst_req_reg && (!succeed);
 
 reg prefetch;
@@ -771,13 +771,13 @@ assign bready   = 1'b0;
 
 // prefetch
 reg [31:0] prefetch_buffer[7:0];
-(*mark_debug="true"*) reg [31:0] prefetch_tag;
+reg [31:0] prefetch_tag;
 
 wire wait_prefetch; 
 assign wait_prefetch = (prefetch_tag[31:5] == inst_addr_reg[31:5]) && (prefetch_state != 4'd0);
 
-(*mark_debug="true"*) reg [2:0]  prefetch_target;
-(*mark_debug="true"*) reg [3:0]  prefetch_state;
+reg [2:0]  prefetch_target;
+reg [3:0]  prefetch_state;
 wire prefetch_succeed_0;
 wire prefetch_succeed_1;
 wire prefetch_succeed_2;
@@ -788,13 +788,13 @@ assign prefetch_succeed_1 = prefetch_hit_1 & prefetch_valid_1;
 assign prefetch_succeed_2 = prefetch_hit_2 & prefetch_valid_2;
 assign prefetch_succeed_3 = prefetch_hit_3 & prefetch_valid_3;
 
-(*mark_debug="true"*) wire prefetch_succeed;
+wire prefetch_succeed;
 assign prefetch_succeed = prefetch_succeed_0 | prefetch_succeed_1 | prefetch_succeed_2 | prefetch_succeed_3;
 
 wire prefetch_hit;
 assign prefetch_hit = prefetch_hit_0 || prefetch_hit_1 || prefetch_hit_2 || prefetch_hit_3;
 
-(*mark_debug="true"*) wire prefetch_work;
+wire prefetch_work;
 assign prefetch_work = inst_req_reg && succeed && !prefetch_succeed && (work_state == 4'b0000);
 
 always @(posedge clk)
@@ -1037,8 +1037,8 @@ always @(posedge clk)
 	end
 
 //reg  [3:0] 	op_workstate;
-(*mark_debug="true"*) reg  [3:0]  op_workstate;
-(*mark_debug="true"*) reg  [31:0] op_addr_reg;
+reg  [3:0]  op_workstate;
+reg  [31:0] op_addr_reg;
 wire [6:0] 	op_index;
 wire [1:0]  op_way;
 wire [4:0]  op_offset;	 

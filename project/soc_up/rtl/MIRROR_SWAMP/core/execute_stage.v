@@ -31,9 +31,6 @@ module execute_stage(
     input   [31:0]              status,
     input   [2: 0]              config_k0,
     
-    // interrupt
-    input                       int_sig,
-    
     // data forwarding
     output  [4 :0]              fwd_addr,
     output  [31:0]              fwd_data,
@@ -60,7 +57,7 @@ module execute_stage(
     input                       valid_i,
     input   [31:0]              pc_i,
     input   [31:0]              inst_i,
-    input   [99:0]              decoded_i,
+    input   [`LDECBITS]         decoded_i,
     input   [31:0]              rdata1_i,
     input   [31:0]              rdata2_i,
     input   [31:0]              pc_j_i,
@@ -78,12 +75,14 @@ module execute_stage(
     // exception interface
     input                       exc_i,
     input                       exc_miss_i,
+    input                       exc_int_i,
     input   [4 :0]              exccode_i,
     output                      commit,
     output                      commit_miss,
     output                      commit_int,
     output  [4 :0]              commit_code,
     output                      commit_bd,
+    output  [1 :0]              commit_ce,
     output  [31:0]              commit_epc,
     output  [31:0]              commit_bvaddr,
     output                      commit_eret,
@@ -99,35 +98,9 @@ module execute_stage(
     
     ////////// post-decode //////////
     
-    wire
-        op_sll,op_srl,op_sra,op_sllv,op_srlv,op_srav,
-        op_jr,op_jalr,op_movz, op_movn, op_syscall,op_break,op_sync,
-        op_mfhi,op_mthi,op_mflo,op_mtlo,op_mult,op_multu,op_div,op_divu,
-        op_add,op_addu,op_sub,op_subu,op_and,op_or,op_xor,op_nor,op_slt,op_sltu,
-        op_tge, op_tgeu, op_tlt, op_tltu, op_teq, op_tne, op_bltz,op_bgez,op_bltzl,op_bgezl,
-        op_tgei, op_tgeiu, op_tlti, op_tltiu, op_teqi, op_tnei, op_bltzal,op_bgezal,op_bltzall,op_bgezall,
-        op_j,op_jal,op_beq,op_bne,op_blez,op_bgtz,
-        op_addi,op_addiu,op_slti,op_sltiu,op_andi,op_ori,op_xori,op_lui,
-        op_mfc0,op_mtc0,op_tlbr,op_tlbwi,op_tlbwr,op_tlbp,op_eret,op_wait,
-        op_beql,op_bnel,op_blezl,op_bgtzl,
-        op_madd,op_maddu,op_mul,op_msub,op_msubu,op_clz,op_clo,
-        op_lb,op_lh,op_lwl,op_lw,op_lbu,op_lhu,op_lwr,op_sb,op_sh,op_swl,op_sw,op_swr,op_cache,op_ll,op_pref,op_sc
-    ;
+    wire `DECODED_OPS;
     
-    assign {
-        op_sll,op_srl,op_sra,op_sllv,op_srlv,op_srav,
-        op_jr,op_jalr,op_movz, op_movn, op_syscall,op_break,op_sync,
-        op_mfhi,op_mthi,op_mflo,op_mtlo,op_mult,op_multu,op_div,op_divu,
-        op_add,op_addu,op_sub,op_subu,op_and,op_or,op_xor,op_nor,op_slt,op_sltu,
-        op_tge, op_tgeu, op_tlt, op_tltu, op_teq, op_tne, op_bltz,op_bgez,op_bltzl,op_bgezl,
-        op_tgei, op_tgeiu, op_tlti, op_tltiu, op_teqi, op_tnei, op_bltzal,op_bgezal,op_bltzall,op_bgezall,
-        op_j,op_jal,op_beq,op_bne,op_blez,op_bgtz,
-        op_addi,op_addiu,op_slti,op_sltiu,op_andi,op_ori,op_xori,op_lui,
-        op_mfc0,op_mtc0,op_tlbr,op_tlbwi,op_tlbwr,op_tlbp,op_eret,op_wait,
-        op_beql,op_bnel,op_blezl,op_bgtzl,
-        op_madd,op_maddu,op_mul,op_msub,op_msubu,op_clz,op_clo,
-        op_lb,op_lh,op_lwl,op_lw,op_lbu,op_lhu,op_lwr,op_sb,op_sh,op_swl,op_sw,op_swr,op_cache,op_ll,op_pref,op_sc
-    } = decoded_i;
+    assign {`DECODED_OPS} = decoded_i;
     
     wire [`I_MAX-1:0] ctrl_sig;
     
@@ -138,6 +111,8 @@ module execute_stage(
     wire cp0_inst = op_mfc0||op_mtc0||op_tlbr||op_tlbwi||op_tlbwr||op_tlbp||op_eret||op_wait||op_cache;
     wire cp0_avail = status[`STATUS_CU0] || !status[`STATUS_UM] || status[`STATUS_EXL];
     wire cp0u = cp0_inst && !cp0_avail;
+    wire cp1u = op_movft||op_cop1||op_lwc1||op_ldc1||op_swc1||op_sdc1;
+    wire cpxu = cp0u || cp1u;
     
     // LLbit
     reg llbit;
@@ -162,7 +137,7 @@ module execute_stage(
     assign ctrl_sig[`I_LB]        = op_lb;
     assign ctrl_sig[`I_LH]        = op_lh;
     assign ctrl_sig[`I_LWL]       = op_lwl;
-    assign ctrl_sig[`I_LW]        = op_lw;
+    assign ctrl_sig[`I_LW]        = op_lw||op_ll;
     assign ctrl_sig[`I_LBU]       = op_lbu;
     assign ctrl_sig[`I_LHU]       = op_lhu;
     assign ctrl_sig[`I_LWR]       = op_lwr;
@@ -410,15 +385,12 @@ module execute_stage(
     
     //wire [31:0] eff_addr = rdata1_i + imm_sx;
     wire [31:0] eaddr = rdata1_i + imm_sx;
-    wire align_4 = op_sw||op_sc||op_swl||op_swr||op_lw||op_ll||op_lwl||op_lwr;
-    wire align_2 = op_sh||op_lh||op_lhu;
-    wire [31:0] ea_aligned = {eaddr[31:2], ~align_4&eaddr[1], ~align_4&~align_2&eaddr[0]};
     wire [1:0] mem_byte_offset = eaddr[1:0];
     wire [1:0] mem_byte_offsetn = ~mem_byte_offset;
     
-    wire kseg01 = ea_aligned[31:30] == 2'b10;
-    wire kseg0 = ea_aligned[31:29] == 3'b100;
-    wire kseg = ea_aligned[31];
+    wire kseg01 = eaddr[31:30] == 2'b10;
+    wire kseg0 = eaddr[31:29] == 3'b100;
+    wire kseg = eaddr[31];
     wire kernelmode = !status[`STATUS_UM] || status[`STATUS_EXL];
     wire mem_adel   = (op_lw||op_ll) && eaddr[1:0] != 2'd0
                    || (op_lh||op_lhu) && eaddr[0] != 1'd0
@@ -429,7 +401,7 @@ module execute_stage(
     wire mem_read = ctrl_sig[`I_MEM_R] && !mem_adel;
     wire mem_write = ctrl_sig[`I_MEM_W] && !mem_ades;
     
-    wire tlbc_hit = tlbc_valid && tlbc_vaddr_hi == ea_aligned[31:12];
+    wire tlbc_hit = tlbc_valid && tlbc_vaddr_hi == eaddr[31:12];
     
     wire tlbc_ok = qstate == 2'd0 && tlbc_hit
                 || qstate == 2'd2;
@@ -447,18 +419,18 @@ module execute_stage(
     
     always @(*) begin
         case (qstate)
-        2'd0:       qstate_next = (kseg01 || tlbc_hit || !valid_i || !mem_read && !mem_write && !(op_cache && !cp0u)) ? 2'd0 : 2'd1;
+        2'd0:       qstate_next = (valid && (mem_read || mem_write || op_cache && !cp0u && !mem_adel) && !kseg01 && !tlbc_hit) ? 2'd1 : 2'd0;
         2'd1:       qstate_next = 2'd2;
-        2'd2:       qstate_next = mem_exc || data_addr_ok ? 2'd0 : 2'd2;
+        2'd2:       qstate_next = mem_exc || data_addr_ok || cache_op_ok ? 2'd0 : 2'd2;
         default:    qstate_next = 2'd0;
         endcase
     end
     
     // ea is saved for tlb lookup
-    reg [31:0] ea_aligned_save;
-    always @(posedge clk) if (qstate_next == 2'd1) ea_aligned_save <= ea_aligned;
+    reg [31:0] eaddr_save;
+    always @(posedge clk) if (qstate_next == 2'd1) eaddr_save <= eaddr;
     
-    assign tlb_vaddr = ea_aligned_save;
+    assign tlb_vaddr = eaddr_save;
     
     always @(posedge clk) begin
         if (!resetn) tlbc_valid <= 1'b0;
@@ -475,7 +447,7 @@ module execute_stage(
             tlbc_cattr <= 3'd0;
         end
         else if (qstate == 2'd1) begin
-            tlbc_vaddr_hi <= ea_aligned_save[31:12];
+            tlbc_vaddr_hi <= eaddr_save[31:12];
             tlbc_paddr_hi <= tlb_paddr[31:12];
             tlbc_miss <= tlb_miss;
             tlbc_invalid <= tlb_invalid;
@@ -488,7 +460,7 @@ module execute_stage(
                   || qstate == 2'd2;
     
     assign data_req = valid && (mem_read || mem_write) && !mem_exc && req_state;
-    assign data_cache = qstate == 2'd0 ? (kseg0 && config_k0[0]) : tlbc_cattr[0];
+    assign data_cache = (qstate == 2'd0 && kseg01) ? (kseg0 && config_k0[0]) : tlbc_cattr[0];
     assign data_wr = mem_write;
     
     // mem write mask
@@ -507,8 +479,8 @@ module execute_stage(
         {32{op_swl}} & (rdata2_i >> (8 * mem_byte_offsetn)) |
         {32{op_swr}} & (rdata2_i << (8 * mem_byte_offset));
     
-    assign data_addr[31:12] = (qstate == 2'd0 && kseg01) ? {3'd0, ea_aligned[28:12]} : tlbc_paddr_hi;
-    assign data_addr[11:0]  = qstate == 2'd0 ? ea_aligned[11:0] : ea_aligned_save[11:0];
+    assign data_addr[31:12] = (qstate == 2'd0 && kseg01) ? {3'd0, eaddr[28:12]} : tlbc_paddr_hi;
+    assign data_addr[11:0]  = qstate == 2'd0 ? eaddr[11:0] : eaddr_save[11:0];
     
     assign data_size =
         {3{op_sw||op_sc||op_swl||op_swr||op_lw||op_ll||op_lwl||op_lwr}} & 3'd2 |
@@ -516,7 +488,7 @@ module execute_stage(
         {3{op_sb||op_lb||op_lbu}} & 3'd0;
     
     // cache op
-    assign cache_req = valid && op_cache && !cp0u && !mem_exc  && req_state;
+    assign cache_req = valid && op_cache && !cp0u && !mem_exc && req_state;
     assign cache_op[0] = `GET_RT(inst_i) == 5'b00000; // icache index invalidate
     assign cache_op[1] = `GET_RT(inst_i) == 5'b01000; // icache index store tag
     assign cache_op[2] = `GET_RT(inst_i) == 5'b10000; // icache hit invalidate
@@ -542,14 +514,13 @@ module execute_stage(
     end
 
     // exceptions
-    wire exc = int_sig || reserved || cp0u
+    wire exc = reserved || cpxu
             || op_syscall || op_break || op_eret || trap
             || alu_of_exc || mem_adel || mem_ades
             || valid_i && (tlbl || tlbs || tlbm);
 
-    wire [4:0] exccode = {5{int_sig}} & `EXC_INT
-                       | {5{reserved}} & `EXC_RI
-                       | {5{cp0u}} & `EXC_CPU
+    wire [4:0] exccode = {5{reserved}} & `EXC_RI
+                       | {5{cpxu}} & `EXC_CPU
                        | {5{op_syscall}} & `EXC_SYS
                        | {5{op_break}} & `EXC_BP
                        | {5{trap}} & `EXC_TR
@@ -560,14 +531,15 @@ module execute_stage(
                        | {5{tlbs}} & `EXC_TLBS
                        | {5{tlbm}} & `EXC_MOD;
     assign commit = valid && exc || valid_i && exc_i;
-    assign commit_miss = !cp0u && valid && (mem_read || mem_write || op_cache) && (qstate == 2'd0 && tlbc_hit || qstate == 2'd2) && tlbc_miss
+    assign commit_miss = !cpxu && valid && (mem_read || mem_write || op_cache) && (qstate == 2'd0 && tlbc_hit || qstate == 2'd2) && tlbc_miss
                       || valid_i && exc_i && exc_miss_i;
-    assign commit_int = !cp0u && int_sig;
-    assign commit_code = valid && exc ? exccode : exccode_i;
+    assign commit_int = valid_i && exc_i && exc_int_i;
+    assign commit_code = valid_i && exc_i ? exccode_i : exccode;
     assign commit_bd = prev_branch;
+    assign commit_ce = {2{cp1u}} & 2'd1;
     assign commit_epc = prev_branch ? pc_i - 32'd4 : pc_i;
     assign commit_bvaddr = exc_i ? pc_i : eaddr;
-    assign commit_eret = !cp0u && op_eret;
+    assign commit_eret = !cpxu && op_eret;
     
     wire done_nonmem = ((op_mfhi||op_mflo||op_mthi||op_mtlo||op_madd||op_maddu||op_msub||op_msubu) && !muldiv
                     ||  (do_j||do_jr||branch_taken||likely) && branch_ready
@@ -575,7 +547,7 @@ module execute_stage(
                     ||  (do_cloz) && cloz_ok
                     || !(op_mfhi||op_mflo||op_mthi||op_mtlo||op_madd||op_maddu||op_msub||op_msubu||
                          do_j||do_jr||branch_taken||likely||op_mul||do_cloz||ctrl_sig[`I_MEM_R]||ctrl_sig[`I_MEM_W]||op_cache));
-    assign done_o   = done_nonmem
+    assign done_o   = done || done_nonmem
                    || (ctrl_sig[`I_MEM_R]||ctrl_sig[`I_MEM_W]) && (data_addr_ok)
                    || op_cache && cache_op_ok
                    || exc_i || exc;

@@ -155,3 +155,21 @@
 `define I_WWB       15
 
 `define I_MAX       16
+
+`define LDEC        106
+`define LDECBITS    `LDEC-1:0
+
+`define DECODED_OPS \
+        op_sll,op_movft,op_srl,op_sra,op_sllv,op_srlv,op_srav, \
+        op_jr,op_jalr,op_movz,op_movn,op_syscall,op_break,op_sync, \
+        op_mfhi,op_mthi,op_mflo,op_mtlo,op_mult,op_multu,op_div,op_divu, \
+        op_add,op_addu,op_sub,op_subu,op_and,op_or,op_xor,op_nor,op_slt,op_sltu, \
+        op_tge,op_tgeu,op_tlt,op_tltu,op_teq,op_tne,op_bltz,op_bgez,op_bltzl,op_bgezl, \
+        op_tgei,op_tgeiu,op_tlti,op_tltiu,op_teqi,op_tnei,op_bltzal,op_bgezal,op_bltzall,op_bgezall, \
+        op_j,op_jal,op_beq,op_bne,op_blez,op_bgtz, \
+        op_addi,op_addiu,op_slti,op_sltiu,op_andi,op_ori,op_xori,op_lui, \
+        op_mfc0,op_mtc0,op_tlbr,op_tlbwi,op_tlbwr,op_tlbp,op_eret,op_wait,op_cop1, \
+        op_beql,op_bnel,op_blezl,op_bgtzl, \
+        op_madd,op_maddu,op_mul,op_msub,op_msubu,op_clz,op_clo, \
+        op_lb,op_lh,op_lwl,op_lw,op_lbu,op_lhu,op_lwr,op_sb,op_sh,op_swl,op_sw,op_swr, \
+        op_cache,op_ll,op_lwc1,op_pref,op_ldc1,op_sc,op_swc1,op_sdc1
