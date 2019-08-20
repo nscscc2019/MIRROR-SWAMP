@@ -1,2 +1,0 @@
-icache_tag_ram.v,verilog,xil_defaultlib,../../../../../../rtl/MIRROR_SWAMP/cache/icache_tag_ram/sim/icache_tag_ram.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v

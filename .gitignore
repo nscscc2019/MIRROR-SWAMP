@@ -21,6 +21,7 @@
 #Documents:
 !*.doc
 !*.docx
+!*.pptx
 !*.md
 !*.txt
 !*.bat
@@ -65,7 +66,7 @@
 #########
 #Simulation logic analyzer
 #########
-!*.wcfg
+# !*.wcfg
 # !*.coe
 #########
 #MIG
@@ -102,7 +103,7 @@
 #########
 #C-files
 #########
-# !*.c
+!*.c
 !*.h
 # !*.elf
 # !*.bmm

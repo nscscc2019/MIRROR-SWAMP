@@ -1,0 +1,3 @@
+12345678901234567890123456789012345678901234567890
+abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+单片机编程过程中经常用到延时函数

@@ -1,5 +1,0 @@
-rtl/xilinx_ip/*/*
-!rtl/xilinx_ip/*/*.xci
-run_vivado/mycpu_prj1/*
-!run_vivado/mycpu_prj1/mycpu.xpr
-!run_vivado/mycpu_prj1/tb_top_behav.wcfg

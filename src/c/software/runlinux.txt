@@ -1,0 +1,64 @@
+ifconfig dmfe0 169.254.239.111
+load tftp://169.254.239.110/vmlinux-llcw
+
+g console=ttyS0,57600 rdinit=sbin/init 
+
+ifconfig eth0 169.254.239.111
+tftp -g -r  1.bin 169.254.239.110
+tftp -g -r  demo 169.254.239.110
+chmod +x demo 
+./demo 
+
+ifconfig eth0 169.254.239.111
+tftp -g -r  1.bin 169.254.239.110
+tftp -g -r  test 169.254.239.110
+chmod +x test 
+./test
+
+ifconfig dmfe0 169.254.239.111
+load tftp://169.254.239.110/vmlinux
+
+g console=ttyS0,57600 rdinit=sbin/init 
+
+ifconfig dmfe0 169.254.239.111
+load tftp://169.254.239.110/vmlinux-display
+
+g console=ttyS0,57600 rdinit=sbin/init 
+
+ifconfig dmfe0 169.254.239.111
+load tftp://169.254.239.110/vmlinux-new
+
+g console=ttyS0,57600 rdinit=sbin/init 
+
+tftp -g -r  demox 169.254.239.110
+chmod +x demox
+./demox
+
+ifconfig eth0 169.254.239.111
+tftp -g -r  1.bin 169.254.239.110
+tftp -g -r  demoy 169.254.239.110
+chmod +x demoy 
+./demoy
+
+tftp -g -r  cm  169.254.239.110
+tftp -g -r  tm  169.254.239.110
+tftp -g -r  fib.cm  169.254.239.110
+tftp -g -r  sum.cm  169.254.239.110
+chmod +x cm
+chmod +x tm
+
+tftp -g -r  chardemo 169.254.239.110
+chmod +x chardemo  
+./chardemo  
+
+
+tftp -g -r  monitor 169.254.239.110
+chmod +x monitor
+./monitor &
+
+
+tftp -g -r  lemon.mmidi 169.254.239.110
+tftp -g -r  music 169.254.239.110
+chmod +x music
+./music
+
