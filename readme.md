@@ -20,3 +20,4 @@ NOTE: before you add any new file to this project, see if `.gitignore` permits y
 
 # LICENSE
 
+Licensed under General Public License v3.0
